@@ -2,9 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package simandi;
-
-import simandi.dashboardAdmin;
+package simandi.ui.jframes;
 
 /**
  *
@@ -46,11 +44,7 @@ public class login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\image-removebg-preview (1) (3).png")); // NOI18N
-
         roundPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\image-removebg-preview (3) (1).png")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
         jLabel3.setText("Login");
