@@ -7,6 +7,11 @@ package smd.swing;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ * @author Tya
+ */
+
 public class gradient extends JPanel {
 
     public gradient() {

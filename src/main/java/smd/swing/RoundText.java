@@ -33,11 +33,11 @@ public class RoundText extends JTextField {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // 🔵 warna solid (yang kamu mau)
+        // warna
         g2.setColor(new Color(204, 255, 255));
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
 
-        // 🔥 border tipis biar rapi
+        // border
         g2.setColor(new Color(0, 0, 0, 20));
         g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
 

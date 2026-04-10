@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package simandi;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -18,8 +20,27 @@ public class dashboardAdmin extends javax.swing.JFrame {
     public dashboardAdmin() {
         initComponents();
         setLocationRelativeTo(null);
-
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+        setActiveMenu(btnLive);
+        
+        btnLive.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLaporan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
+    
+    private void setActiveMenu(javax.swing.JLabel menu) {
+        panelIndicator.setSize(menu.getWidth(), 4);
+        panelIndicator.setLocation(menu.getX(), panelIndicator.getY());
+
+        btnLive.setForeground(Color.BLACK);
+        btnData.setForeground(Color.BLACK);
+        btnLaporan.setForeground(Color.BLACK);
+
+        menu.setForeground(new Color(0, 102, 255));
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,6 +53,14 @@ public class dashboardAdmin extends javax.swing.JFrame {
 
         roundPanel1 = new smd.swing.RoundPanel();
         gradient1 = new smd.swing.gradient();
+        roundPanel4 = new smd.swing.RoundPanel();
+        jLabel1 = new javax.swing.JLabel();
+        btnLive = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnData = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        btnLaporan = new javax.swing.JLabel();
+        panelIndicator = new javax.swing.JPanel();
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -45,33 +74,131 @@ public class dashboardAdmin extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+
+        gradient1.setPreferredSize(new java.awt.Dimension(1553, 848));
+
+        roundPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\monitor (1).png")); // NOI18N
+
+        btnLive.setFont(new java.awt.Font("Comic Sans MS", 1, 20)); // NOI18N
+        btnLive.setText("Live Monitoring");
+        btnLive.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLiveMouseClicked(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\manage (2).png")); // NOI18N
+
+        btnData.setFont(new java.awt.Font("Comic Sans MS", 1, 20)); // NOI18N
+        btnData.setText("Manajemen Data");
+        btnData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDataMouseClicked(evt);
+            }
+        });
+
+        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\laporan (1).png")); // NOI18N
+
+        btnLaporan.setFont(new java.awt.Font("Comic Sans MS", 1, 20)); // NOI18N
+        btnLaporan.setText("Laporan");
+        btnLaporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLaporanMouseClicked(evt);
+            }
+        });
+
+        panelIndicator.setBackground(new java.awt.Color(102, 255, 255));
+
+        javax.swing.GroupLayout panelIndicatorLayout = new javax.swing.GroupLayout(panelIndicator);
+        panelIndicator.setLayout(panelIndicatorLayout);
+        panelIndicatorLayout.setHorizontalGroup(
+            panelIndicatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelIndicatorLayout.setVerticalGroup(
+            panelIndicatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 4, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout roundPanel4Layout = new javax.swing.GroupLayout(roundPanel4);
+        roundPanel4.setLayout(roundPanel4Layout);
+        roundPanel4Layout.setHorizontalGroup(
+            roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel4Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelIndicator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(roundPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLive)))
+                .addGap(36, 36, 36)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnData)
+                .addGap(36, 36, 36)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(946, Short.MAX_VALUE))
+        );
+        roundPanel4Layout.setVerticalGroup(
+            roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel4Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelIndicator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
+            .addComponent(btnData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnLive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 357, Short.MAX_VALUE)
+            .addComponent(roundPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         gradient1Layout.setVerticalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(gradient1Layout.createSequentialGroup()
+                .addComponent(roundPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 835, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(gradient1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 43, Short.MAX_VALUE))
+            .addComponent(gradient1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradient1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(gradient1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiveMouseClicked
+        setActiveMenu(btnLive);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLiveMouseClicked
+
+    private void btnDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataMouseClicked
+        setActiveMenu(btnData);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDataMouseClicked
+
+    private void btnLaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLaporanMouseClicked
+         setActiveMenu(btnLaporan);       // TODO add your handling code here:
+    }//GEN-LAST:event_btnLaporanMouseClicked
 
     /**
      * @param args the command line arguments
@@ -99,7 +226,15 @@ public class dashboardAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnData;
+    private javax.swing.JLabel btnLaporan;
+    private javax.swing.JLabel btnLive;
     private smd.swing.gradient gradient1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel panelIndicator;
     private smd.swing.RoundPanel roundPanel1;
+    private smd.swing.RoundPanel roundPanel4;
     // End of variables declaration//GEN-END:variables
 }
