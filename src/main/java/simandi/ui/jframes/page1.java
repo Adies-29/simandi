@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package simandi;
+package simandi.ui.jframes;
 
+import simandi.ui.jframes.login;
 import javax.swing.Timer;
 import javax.swing.*;
 
@@ -49,8 +50,6 @@ public class page1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\Downloads\\image-removebg-preview (1) (3).png")); // NOI18N
 
         javax.swing.GroupLayout gradient3Layout = new javax.swing.GroupLayout(gradient3);
         gradient3.setLayout(gradient3Layout);
