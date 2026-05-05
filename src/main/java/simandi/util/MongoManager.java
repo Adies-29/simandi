@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 
 package simandi.util;
 
@@ -14,10 +9,7 @@ import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-/**
- *
- * @author Adies
- */
+
 public class MongoManager {
     private static MongoClient mongoClient;
     private static final String DATABASE_NAME = "db_simandi";
