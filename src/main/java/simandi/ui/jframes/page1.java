@@ -51,6 +51,8 @@ public class page1 extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asset/image/logo_sz_400.png"))); // NOI18N
+
         javax.swing.GroupLayout gradient3Layout = new javax.swing.GroupLayout(gradient3);
         gradient3.setLayout(gradient3Layout);
         gradient3Layout.setHorizontalGroup(
