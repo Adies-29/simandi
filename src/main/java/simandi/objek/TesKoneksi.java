@@ -4,14 +4,18 @@
  */
 package simandi.objek;
 
+
+/**
+ *
+ * @author Tya
+ */
+ master
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import simandi.util.MongoManager;
 
-/**
- *
- * @author Lenovo
- */
+
+
 public class TesKoneksi {
     public static void main(String[] args) {
         try {
@@ -44,4 +48,3 @@ public class TesKoneksi {
             System.err.println("=========================================");
         }
     }
-}

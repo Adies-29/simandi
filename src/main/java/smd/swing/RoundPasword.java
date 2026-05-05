@@ -32,11 +32,11 @@ public class RoundPasword extends JPasswordField {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // 🔵 WARNA SAMA PERSIS
+        // WARNANYA
         g2.setColor(new Color(204, 255, 255));
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
 
-        // 🔥 BORDER HALUS
+        // BORDER
         g2.setColor(new Color(0, 0, 0, 20));
         g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, radius, radius);
 

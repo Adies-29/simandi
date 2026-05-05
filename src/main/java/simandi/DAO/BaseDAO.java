@@ -4,13 +4,15 @@
  */
 package simandi.DAO;
 
-/**
- *
- * @author Lenovo
- */
+
 
 import java.util.List;
 import org.bson.conversions.Bson;
+
+/**
+ *
+ * @author Tya
+ */
 
 public interface BaseDAO<T> {
     // Operasi CRUD Dasar
@@ -22,4 +24,3 @@ public interface BaseDAO<T> {
     List<T> findAll();
     T findOne(Bson filter); // Mencari satu data spesifik
     List<T> findMany(Bson filter); // Mencari banyak data berdasarkan kriteria
-}

@@ -2,8 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
 package simandi.ui.jframes;
 
+import java.awt.CardLayout; 
+import java.awt.Color; 
+import java.awt.Dimension; 
+import javax.swing.JPanel; 
+import java.awt.BorderLayout;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import simandi.ui.jframes.login;
 /**
  *
  * @author Tya
@@ -18,9 +27,48 @@ public class dashboardAdmin extends javax.swing.JFrame {
     public dashboardAdmin() {
         initComponents();
         setLocationRelativeTo(null);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+        setActiveMenu(btnLive);
+        AddViews(new simandi.ui.panels.LiveMonitor()); // default live
 
+        
     }
+    
+    private void setActiveMenu(javax.swing.JLabel menu) {
 
+    // reset semua ke default
+    btnLive.setForeground(new Color(80, 80, 80));
+    btnData.setForeground(new Color(80, 80, 80));
+    btnLaporan.setForeground(new Color(80, 80, 80));
+
+    btnLive.setBorder(null);
+    btnData.setBorder(null);
+    btnLaporan.setBorder(null);
+
+    // warna soft
+    Color softBlue = new Color(158, 180, 255);      // garis
+    Color textBlue = new Color(70, 130, 200);       // teks (lebih gelap dikit biar kebaca)
+
+    // aktif
+    menu.setForeground(textBlue);
+
+    Border bottomLine = BorderFactory.createMatteBorder(0, 0, 3, 0, softBlue);
+    menu.setBorder(bottomLine);
+}
+    
+    
+    private void AddViews(JPanel panel) {
+    mainpanel.removeAll();
+    mainpanel.setLayout(new BorderLayout());
+    mainpanel.add(panel, BorderLayout.CENTER);
+    mainpanel.revalidate();
+    mainpanel.repaint();
+    }
+    
+    
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +79,19 @@ public class dashboardAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         roundPanel1 = new smd.swing.RoundPanel();
+        buttonMenu1 = new smd.swing.ButtonMenu();
         gradient1 = new smd.swing.gradient();
+        roundPanel2 = new smd.swing.RoundPanel();
+        buttonBadges1 = new smd.swing.ButtonBadges();
+        btnLogout = new smd.swing.ButtonBadges();
+        buttonBadges3 = new smd.swing.ButtonBadges();
+        btnLive = new javax.swing.JLabel();
+        buttonBadges4 = new smd.swing.ButtonBadges();
+        btnData = new javax.swing.JLabel();
+        buttonBadges5 = new smd.swing.ButtonBadges();
+        btnLaporan = new javax.swing.JLabel();
+        buttonBadges6 = new smd.swing.ButtonBadges();
+        mainpanel = new javax.swing.JPanel();
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -45,25 +105,156 @@ public class dashboardAdmin extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1579, 769));
+
+        roundPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        buttonBadges1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/profil-photo (1).png"))); // NOI18N
+        buttonBadges1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges1ActionPerformed(evt);
+            }
+        });
+
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logout.png"))); // NOI18N
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        buttonBadges3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/monitor (1).png"))); // NOI18N
+        buttonBadges3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges3ActionPerformed(evt);
+            }
+        });
+
+        btnLive.setFont(new java.awt.Font("MS UI Gothic", 1, 18)); // NOI18N
+        btnLive.setText("Live Monitor");
+        btnLive.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLiveMouseClicked(evt);
+            }
+        });
+
+        buttonBadges4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/manage (3).png"))); // NOI18N
+        buttonBadges4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges4ActionPerformed(evt);
+            }
+        });
+
+        btnData.setFont(new java.awt.Font("MS UI Gothic", 1, 18)); // NOI18N
+        btnData.setText("Manajemen Data");
+        btnData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDataMouseClicked(evt);
+            }
+        });
+
+        buttonBadges5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/laporan (1) (1).png"))); // NOI18N
+        buttonBadges5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges5ActionPerformed(evt);
+            }
+        });
+
+        btnLaporan.setFont(new java.awt.Font("MS UI Gothic", 1, 18)); // NOI18N
+        btnLaporan.setText("Laporan");
+        btnLaporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLaporanMouseClicked(evt);
+            }
+        });
+
+        buttonBadges6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/notification (1).png"))); // NOI18N
+        buttonBadges6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
+        roundPanel2.setLayout(roundPanel2Layout);
+        roundPanel2Layout.setHorizontalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(buttonBadges3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnLive)
+                .addGap(20, 20, 20)
+                .addComponent(buttonBadges4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnData)
+                .addGap(20, 20, 20)
+                .addComponent(buttonBadges5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 808, Short.MAX_VALUE)
+                .addComponent(buttonBadges6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52))
+        );
+        roundPanel2Layout.setVerticalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonBadges5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonBadges4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnLive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonBadges3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonBadges1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonBadges6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        mainpanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout mainpanelLayout = new javax.swing.GroupLayout(mainpanel);
+        mainpanel.setLayout(mainpanelLayout);
+        mainpanelLayout.setHorizontalGroup(
+            mainpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        mainpanelLayout.setVerticalGroup(
+            mainpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 784, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 357, Short.MAX_VALUE)
+            .addComponent(roundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         gradient1Layout.setVerticalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(gradient1Layout.createSequentialGroup()
+                .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(mainpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(gradient1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 43, Short.MAX_VALUE))
+            .addComponent(gradient1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,6 +263,47 @@ public class dashboardAdmin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonBadges1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges1ActionPerformed
+
+    private void buttonBadges3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges3ActionPerformed
+
+    private void buttonBadges4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges4ActionPerformed
+
+    private void buttonBadges5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges5ActionPerformed
+
+    private void btnLiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiveMouseClicked
+        setActiveMenu(btnLive); 
+        AddViews(new simandi.ui.panels.LiveMonitor());// TODO add your handling code here:
+    }//GEN-LAST:event_btnLiveMouseClicked
+
+    private void btnDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataMouseClicked
+        setActiveMenu(btnData);
+        AddViews(new simandi.ui.panels.MenajemenData());// TODO add your handling code here:
+    }//GEN-LAST:event_btnDataMouseClicked
+
+    private void btnLaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLaporanMouseClicked
+        setActiveMenu(btnLaporan);
+        AddViews(new simandi.ui.panels.Laporan());// TODO add your handling code here:
+    }//GEN-LAST:event_btnLaporanMouseClicked
+
+    private void buttonBadges6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges6ActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        login P = new login();        
+        P.setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -99,7 +331,19 @@ public class dashboardAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnData;
+    private javax.swing.JLabel btnLaporan;
+    private javax.swing.JLabel btnLive;
+    private smd.swing.ButtonBadges btnLogout;
+    private smd.swing.ButtonBadges buttonBadges1;
+    private smd.swing.ButtonBadges buttonBadges3;
+    private smd.swing.ButtonBadges buttonBadges4;
+    private smd.swing.ButtonBadges buttonBadges5;
+    private smd.swing.ButtonBadges buttonBadges6;
+    private smd.swing.ButtonMenu buttonMenu1;
     private smd.swing.gradient gradient1;
+    private javax.swing.JPanel mainpanel;
     private smd.swing.RoundPanel roundPanel1;
+    private smd.swing.RoundPanel roundPanel2;
     // End of variables declaration//GEN-END:variables
 }
