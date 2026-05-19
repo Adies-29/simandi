@@ -39,23 +39,17 @@ public class logout extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 255));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\Tugas Kuliah\\Pem Kom 2\\alert.png")); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Yakin anda ingin logout?");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon("D:\\Tugas Kuliah\\Pem Kom 2\\logo 150.png")); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, -1, -1));
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, -20, -1, -1));
 
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Anda akan keluar dari sistem SIMANDI.");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, -1, -1));
 
-        BtnBatal.setBackground(new java.awt.Color(255, 255, 255));
         BtnBatal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         BtnBatal.setForeground(new java.awt.Color(0, 102, 153));
         BtnBatal.setText("Batal");
@@ -66,7 +60,7 @@ public class logout extends javax.swing.JFrame {
                 BtnBatalActionPerformed(evt);
             }
         });
-        getContentPane().add(BtnBatal, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 90, 40));
+        getContentPane().add(BtnBatal, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 90, 40));
 
         BtnLogout.setBackground(new java.awt.Color(0, 116, 241));
         BtnLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -78,10 +72,7 @@ public class logout extends javax.swing.JFrame {
                 BtnLogoutActionPerformed(evt);
             }
         });
-        getContentPane().add(BtnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 100, 40));
-
-        jLabel2.setIcon(new javax.swing.ImageIcon("D:\\Tugas Kuliah\\Pem Kom 2\\Baground logout.png")); // NOI18N
-        jLabel2.setText("jLabel2");
+        getContentPane().add(BtnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 100, 40));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();

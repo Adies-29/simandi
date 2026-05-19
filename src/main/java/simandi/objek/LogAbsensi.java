@@ -3,10 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package simandi.objek;
-
 /**
  *
- * @author Lenovo
+ * @author Tya
  */
 public class LogAbsensi {
     

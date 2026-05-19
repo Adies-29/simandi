@@ -4,19 +4,178 @@
  */
 package simandi.ui.panels;
 
+import smd.swing.ScrollBarCustom;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import simandi.objek.Anggota;
+import simandi.service.AnggotaService;
+
+
 /**
  *
  * @author Tya
  */
-public class MenajemenData extends javax.swing.JPanel {
+public final class MenajemenData extends javax.swing.JPanel {
 
+    
+    private final AnggotaService service =
+            new AnggotaService();
+
+    private boolean modeEdit = false;
     /**
      * Creates new form MenajemenData
      */
     public MenajemenData() {
         initComponents();
-    }
+        
+        DefaultTableModel model =
+        (DefaultTableModel) tblUser.getModel();
 
+        model.setRowCount(0);
+        //Load Table        
+        loadTable();
+        
+        tblUser.clearSelection();
+
+        tblUser.setFillsViewportHeight(false);
+
+        tblUser.setRowSelectionAllowed(true);
+        tblUser.setColumnSelectionAllowed(false);
+        tblUser.setCellSelectionEnabled(false);
+
+       
+        // STYLE TABLE
+        tblUser.setRowHeight(35);
+        tblUser.setShowGrid(false);
+        tblUser.setIntercellSpacing(new Dimension(0, 0));
+        tblUser.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        tblUser.setSelectionBackground(new Color(52, 152, 219));
+        tblUser.setSelectionForeground(Color.WHITE);
+
+        // HEADER STYLE
+        JTableHeader header = tblUser.getTableHeader();
+
+        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setBackground(new Color(52, 152, 219));
+        header.setForeground(Color.WHITE);
+        header.setPreferredSize(new Dimension(header.getWidth(), 40));
+
+        // SCROLLBAR CUSTOM
+        jScrollPane1.setVerticalScrollBar(new ScrollBarCustom());
+
+        // HILANGKAN BORDER
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setViewportBorder(null);
+
+        // PANEL PUTIH
+        jPanel2.setBackground(Color.WHITE);
+        
+        //Search        
+        txtSearch.addKeyListener(
+                new java.awt.event.KeyAdapter() {
+
+            @Override
+            public void keyReleased(
+                    java.awt.event.KeyEvent e
+            ) {
+                searchData();
+            }
+        });    
+    }
+    
+//    Load dong
+        private void loadTable() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) tblUser.getModel();
+
+    model.setRowCount(0);
+
+    List<Anggota> list =
+            service.tampilSemuaAnggota();
+
+    for (Anggota a : list) {
+
+        // SKIP kalau data kosong
+        if (a == null
+                || a.getNim() == null
+                || a.getNim().trim().isEmpty()) {
+            continue;
+        }
+
+        Object[] row = {
+            a.getUidRfid(),
+            a.getNamaLengkap(),
+            a.getNim(),
+            a.getKelas(),
+            a.getJurusan(),
+            a.getStatus(),
+            "Hapus"
+        };
+
+        model.addRow(row);
+    }
+}
+     
+//     Clear broo
+    private void clearForm() {
+
+    txtUID.setText("");
+    txtNama.setText("");
+    txtNim.setText("");
+
+    comboKelas.setSelectedIndex(0);
+    comboJurusan.setSelectedIndex(0);
+    comboStatus.setSelectedIndex(0);
+
+    tblUser.clearSelection();
+    tblUser.revalidate();
+    tblUser.repaint();
+
+    modeEdit = false;
+}
+//     Searchh 
+   private void searchData() {
+
+    String key = txtSearch.getText();
+
+    DefaultTableModel model =
+            (DefaultTableModel) tblUser.getModel();
+
+    model.setRowCount(0);
+
+    List<Anggota> list =
+            service.searchAnggota(key);
+
+    for (Anggota a : list) {
+
+        // SKIP data kosong
+        if (a == null
+                || a.getNim() == null
+                || a.getNim().trim().isEmpty()) {
+            continue;
+        }
+
+        Object[] row = {
+            a.getUidRfid(),
+            a.getNamaLengkap(),
+            a.getNim(),
+            a.getKelas(),
+            a.getJurusan(),
+            a.getStatus(),
+            "Hapus"
+        };
+
+        model.addRow(row);
+    }
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,25 +187,309 @@ public class MenajemenData extends javax.swing.JPanel {
 
         gradient1 = new smd.swing.gradient();
         btnLaporan1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        comboJurusan = new javax.swing.JComboBox<>();
+        txtNama = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        comboStatus = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        txtUID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtNim = new javax.swing.JTextField();
+        comboKelas = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUser = new javax.swing.JTable();
+        roundPanel1 = new smd.swing.RoundPanel();
+        txtSearch = new javax.swing.JTextField();
+        lblClear = new javax.swing.JLabel();
+        roundPanel2 = new smd.swing.RoundPanel();
+        btnRefresh = new javax.swing.JLabel();
+        roundPanel3 = new smd.swing.RoundPanel();
+        btnSave = new javax.swing.JLabel();
+        roundPanel4 = new smd.swing.RoundPanel();
+        btnBatal = new javax.swing.JLabel();
 
-        btnLaporan1.setFont(new java.awt.Font("Pristina", 1, 36)); // NOI18N
-        btnLaporan1.setText("Menajemen Data");
+        btnLaporan1.setFont(new java.awt.Font("MS UI Gothic", 1, 24)); // NOI18N
+        btnLaporan1.setText("Data Anggota Mahasiswa");
+
+        jLabel6.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel6.setText("Status");
+
+        comboJurusan.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        comboJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih Jurusan --", "Teknik Informatika", "Sistem Informasi", "Teknik Komputer", "Manajemen Informatika", "Teknik Elektro", "Teknik Mesin", "Akuntansi", "Manajemen", "Bisnis Digital" }));
+        comboJurusan.setBorder(null);
+
+        txtNama.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        txtNama.setBorder(null);
+
+        jLabel5.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel5.setText("Kelas");
+
+        jLabel8.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel8.setText("Nim");
+
+        comboStatus.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--  Pilih Status --", "Aktif", "No Aktif", "Cuti" }));
+        comboStatus.setBorder(null);
+
+        jLabel7.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel7.setText("UID Kartu");
+
+        txtUID.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        txtUID.setBorder(null);
+
+        jLabel2.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel2.setText("Nama");
+
+        txtNim.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        txtNim.setBorder(null);
+
+        comboKelas.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        comboKelas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih Kelas --", "1A", "2B", "3C", "4D" }));
+        comboKelas.setBorder(null);
+
+        jLabel9.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel9.setText("Jurusan");
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        tblUser.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "UID Kartu", "Nama Mahasiswa", "Nim", "Kelas", "Jurusan", "Status", "Aksi"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUserMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblUser);
+
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        roundPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        roundPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtSearch.setFont(new java.awt.Font("SimSun", 0, 14)); // NOI18N
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtSearch.setText("Search");
+        txtSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 15, 0, 35));
+        txtSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSearchFocusGained(evt);
+            }
+        });
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+        roundPanel1.add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 240, 60));
+
+        lblClear.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        lblClear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblClear.setText("X");
+        lblClear.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lblClearFocusLost(evt);
+            }
+        });
+        lblClear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblClearMouseClicked(evt);
+            }
+        });
+        roundPanel1.add(lblClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 40, 60));
+
+        roundPanel2.setBackground(new java.awt.Color(204, 255, 204));
+
+        btnRefresh.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        btnRefresh.setText("                               Refresh");
+        btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRefreshMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
+        roundPanel2.setLayout(roundPanel2Layout);
+        roundPanel2Layout.setHorizontalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        roundPanel2Layout.setVerticalGroup(
+            roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        roundPanel3.setBackground(new java.awt.Color(153, 255, 255));
+
+        btnSave.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        btnSave.setText("           Simpan");
+        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSaveMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel3Layout = new javax.swing.GroupLayout(roundPanel3);
+        roundPanel3.setLayout(roundPanel3Layout);
+        roundPanel3Layout.setHorizontalGroup(
+            roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        roundPanel3Layout.setVerticalGroup(
+            roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+        );
+
+        roundPanel4.setBackground(new java.awt.Color(255, 102, 102));
+
+        btnBatal.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        btnBatal.setText("            Batal");
+        btnBatal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBatalMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roundPanel4Layout = new javax.swing.GroupLayout(roundPanel4);
+        roundPanel4.setLayout(roundPanel4Layout);
+        roundPanel4Layout.setHorizontalGroup(
+            roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roundPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnBatal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        roundPanel4Layout.setVerticalGroup(
+            roundPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnBatal, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
-                .addGap(694, 694, 694)
-                .addComponent(btnLaporan1)
-                .addContainerGap(639, Short.MAX_VALUE))
+                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1463, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(15, 15, 15)
+                                .addComponent(txtUID, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(txtNim, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(comboKelas, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnLaporan1)
+                            .addGroup(gradient1Layout.createSequentialGroup()
+                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboJurusan, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(roundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(gradient1Layout.createSequentialGroup()
+                                        .addComponent(roundPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(roundPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)))))
+                .addContainerGap(247, Short.MAX_VALUE))
         );
         gradient1Layout.setVerticalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
                 .addComponent(btnLaporan1)
-                .addContainerGap(706, Short.MAX_VALUE))
+                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNim, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboJurusan, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(roundPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(roundPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(roundPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboKelas, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)))
+                .addGap(30, 30, 30)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(129, 129, 129))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -63,9 +506,183 @@ public class MenajemenData extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
+
+    int row = tblUser.getSelectedRow();
+    int col = tblUser.getSelectedColumn();
+
+    // kalau klik kolom hapus
+    if (col == 6) {
+
+        String nim = tblUser.getValueAt(row, 2).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(
+                null,
+                "Apakah anda yakin ingin menghapus data ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+
+            service.hapusAnggota(nim);
+
+            loadTable();
+            clearForm();
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Data berhasil dihapus"
+            );
+        }
+
+        return;
+    }
+
+    // tampilkan data ke form
+    txtUID.setText(
+            tblUser.getValueAt(row, 0).toString()
+    );
+
+    txtNama.setText(
+            tblUser.getValueAt(row, 1).toString()
+    );
+
+    txtNim.setText(
+            tblUser.getValueAt(row, 2).toString()
+    );
+
+    comboKelas.setSelectedItem(
+            tblUser.getValueAt(row, 3).toString()
+    );
+
+    comboJurusan.setSelectedItem(
+            tblUser.getValueAt(row, 4).toString()
+    );
+
+    comboStatus.setSelectedItem(
+            tblUser.getValueAt(row, 5).toString()
+    );
+
+    modeEdit = true;
+    }//GEN-LAST:event_tblUserMouseClicked
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
+        if(txtSearch.getText().equals("Search")) {
+            txtSearch.setText("");}        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchFocusGained
+
+    private void lblClearFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lblClearFocusLost
+        if (txtSearch.getText().trim().isEmpty()) {
+            txtSearch.setText("Search");}// TODO add your handling code here:
+    }//GEN-LAST:event_lblClearFocusLost
+
+    private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
+        loadTable();
+        
+        clearForm();
+    }//GEN-LAST:event_btnRefreshMouseClicked
+
+    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
+        Anggota a = new Anggota();
+
+        a.setUidRfid(txtUID.getText());
+        a.setNamaLengkap(txtNama.getText());
+        a.setNim(txtNim.getText());
+
+        a.setKelas(
+                comboKelas.getSelectedItem().toString()
+        );
+
+        a.setJurusan(
+                comboJurusan.getSelectedItem().toString()
+        );
+
+        a.setStatus(
+                comboStatus.getSelectedItem().toString()
+        );
+        
+//        Validasi input belum ada
+        if (txtUID.getText().trim().isEmpty()
+        || txtNama.getText().trim().isEmpty()
+        || txtNim.getText().trim().isEmpty()
+        || comboKelas.getSelectedIndex() == 0
+        || comboJurusan.getSelectedIndex() == 0
+        || comboStatus.getSelectedIndex() == 0) {
+
+    JOptionPane.showMessageDialog(
+            null,
+            "Data belum lengkap!"
+    );
+
+    return;
+}
+
+        if (modeEdit) {
+
+            service.updateAnggota(a);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Data berhasil diupdate"
+            );
+
+        } else {
+
+            service.tambahAnggota(a);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Data berhasil disimpan"
+            );
+        }
+
+        loadTable();
+
+        clearForm();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSaveMouseClicked
+
+    private void btnBatalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBatalMouseClicked
+          clearForm();// TODO add your handling code here:
+    }//GEN-LAST:event_btnBatalMouseClicked
+
+    private void lblClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblClearMouseClicked
+        txtSearch.setText("Search");
+
+        loadTable();// TODO add your handling code here:
+    }//GEN-LAST:event_lblClearMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btnBatal;
     private javax.swing.JLabel btnLaporan1;
+    private javax.swing.JLabel btnRefresh;
+    private javax.swing.JLabel btnSave;
+    private javax.swing.JComboBox<String> comboJurusan;
+    private javax.swing.JComboBox<String> comboKelas;
+    private javax.swing.JComboBox<String> comboStatus;
     private smd.swing.gradient gradient1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClear;
+    private smd.swing.RoundPanel roundPanel1;
+    private smd.swing.RoundPanel roundPanel2;
+    private smd.swing.RoundPanel roundPanel3;
+    private smd.swing.RoundPanel roundPanel4;
+    private javax.swing.JTable tblUser;
+    private javax.swing.JTextField txtNama;
+    private javax.swing.JTextField txtNim;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtUID;
     // End of variables declaration//GEN-END:variables
 }
