@@ -36,9 +36,9 @@ public class login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        roundText1 = new smd.swing.RoundText();
+        txtUsrname = new smd.swing.RoundText();
         jLabel5 = new javax.swing.JLabel();
-        roundPasword2 = new smd.swing.RoundPasword();
+        txtPasword = new smd.swing.RoundPasword();
         roundPanel1 = new smd.swing.RoundPanel();
         jLabel6 = new javax.swing.JLabel();
 
@@ -54,12 +54,12 @@ public class login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Constantia", 0, 20)); // NOI18N
         jLabel4.setText("Username");
 
-        roundText1.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
+        txtUsrname.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Constantia", 0, 20)); // NOI18N
         jLabel5.setText("Password");
 
-        roundPasword2.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
+        txtPasword.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
 
         roundPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -102,8 +102,8 @@ public class login extends javax.swing.JFrame {
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(roundText1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(roundPasword2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtUsrname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPasword, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel2Layout.createSequentialGroup()
                                 .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(158, 158, 158)))
@@ -122,11 +122,11 @@ public class login extends javax.swing.JFrame {
                 .addGap(112, 112, 112)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(roundText1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsrname, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
-                .addComponent(roundPasword2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPasword, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83)
                 .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -168,36 +168,61 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        dashboardAdmin dashboard = new dashboardAdmin();
-        dashboard.setVisible(true);
+        try {
+            // 1. Ambil input dari textfield
+            String username = txtUsrname.getText();
+            // Mengambil password dari JPasswordField
+            String password = new String(txtPasword.getPassword());
 
-        //Tutup
-        dispose();// TODO add your handling code here:
+            // 2. Hubungkan ke database menggunakan MongoManager
+            com.mongodb.client.MongoDatabase db = simandi.util.MongoManager.getDatabase();
+            com.mongodb.client.MongoCollection<org.bson.Document> col = db.getCollection("admin");
+
+            // 3. Cari data yang cocok
+            org.bson.Document query = new org.bson.Document("username", username)
+                    .append("password", password);
+            org.bson.Document user = col.find(query).first();
+
+            // 4. Cek hasil pencarian
+            if (user != null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Login Berhasil!");
+
+                // Membuka halaman Monitoring
+                new dashboardAdmin().setVisible(true);
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Username atau Password Salah!");
+            }
+
+        } catch (java.lang.Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi Kesalahan: " + e.getMessage());
+        }        // TODO add your handling code here:
+    //GEN-LAST:event_btnLoginActionPerformed
     }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
+    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
+    }
+    //</editor-fold>
+    
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -210,7 +235,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private smd.swing.RoundPanel roundPanel1;
     private smd.swing.RoundPanel roundPanel2;
-    private smd.swing.RoundPasword roundPasword2;
-    private smd.swing.RoundText roundText1;
+    private smd.swing.RoundPasword txtPasword;
+    private smd.swing.RoundText txtUsrname;
     // End of variables declaration//GEN-END:variables
 }
