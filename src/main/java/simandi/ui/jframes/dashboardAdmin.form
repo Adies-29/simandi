@@ -22,9 +22,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1579, 769]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -61,14 +58,14 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="roundPanel2" max="32767" attributes="0"/>
-              <Component id="mainpanel" alignment="0" max="32767" attributes="0"/>
+              <Component id="mainpanel" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="roundPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="mainpanel" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -98,7 +95,7 @@
                       <Component id="buttonBadges5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="btnLaporan" min="-2" pref="78" max="-2" attributes="0"/>
-                      <EmptySpace pref="808" max="32767" attributes="0"/>
+                      <EmptySpace pref="799" max="32767" attributes="0"/>
                       <Component id="buttonBadges6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="buttonBadges1" min="-2" max="-2" attributes="0"/>

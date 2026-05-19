@@ -31,24 +31,24 @@ public class LiveMonitor extends javax.swing.JPanel {
 
         gradient1.setPreferredSize(new java.awt.Dimension(1553, 790));
 
-        btnLaporan1.setFont(new java.awt.Font("Pristina", 1, 36)); // NOI18N
+        btnLaporan1.setFont(new java.awt.Font("MS UI Gothic", 1, 24)); // NOI18N
         btnLaporan1.setText("Live Monitor");
 
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradient1Layout.createSequentialGroup()
-                .addContainerGap(710, Short.MAX_VALUE)
+            .addGroup(gradient1Layout.createSequentialGroup()
+                .addGap(689, 689, 689)
                 .addComponent(btnLaporan1)
-                .addGap(672, 672, 672))
+                .addContainerGap(733, Short.MAX_VALUE))
         );
         gradient1Layout.setVerticalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(21, 21, 21)
                 .addComponent(btnLaporan1)
-                .addContainerGap(721, Short.MAX_VALUE))
+                .addContainerGap(744, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
