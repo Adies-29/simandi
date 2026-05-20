@@ -104,15 +104,15 @@ public final class MenajemenData extends javax.swing.JPanel {
 
         // SKIP kalau data kosong
         if (a == null
-                || a.getNim() == null
-                || a.getNim().trim().isEmpty()) {
+                || a.getNimAnggota() == null
+                || a.getNimAnggota().trim().isEmpty()) {
             continue;
         }
 
         Object[] row = {
             a.getUidRfid(),
             a.getNamaLengkap(),
-            a.getNim(),
+            a.getNimAnggota(),
             a.getKelas(),
             a.getJurusan(),
             a.getStatus(),
@@ -157,15 +157,15 @@ public final class MenajemenData extends javax.swing.JPanel {
 
         // SKIP data kosong
         if (a == null
-                || a.getNim() == null
-                || a.getNim().trim().isEmpty()) {
+                || a.getNimAnggota()== null
+                || a.getNimAnggota().trim().isEmpty()) {
             continue;
         }
 
         Object[] row = {
             a.getUidRfid(),
             a.getNamaLengkap(),
-            a.getNim(),
+            a.getNimAnggota(),
             a.getKelas(),
             a.getJurusan(),
             a.getStatus(),
@@ -592,7 +592,7 @@ public final class MenajemenData extends javax.swing.JPanel {
 
         a.setUidRfid(txtUID.getText());
         a.setNamaLengkap(txtNama.getText());
-        a.setNim(txtNim.getText());
+        a.setNimAnggota(txtNim.getText());
 
         a.setKelas(
                 comboKelas.getSelectedItem().toString()
