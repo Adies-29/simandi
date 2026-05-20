@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import simandi.ui.dialogs.logout;
 import simandi.ui.jframes.login;
 /**
  *
@@ -299,9 +300,9 @@ public class dashboardAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonBadges6ActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        login P = new login();        
+        logout P = new logout();        
         P.setVisible(true);
-        this.dispose();        // TODO add your handling code here:
+              // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
