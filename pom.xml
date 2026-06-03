@@ -17,6 +17,8 @@
             <artifactId>mongodb-driver-sync</artifactId>
             <version>5.0.0</version>
         </dependency>
+        
+        <!-- Library Hardware RFID (Pertemuan 13) -->
         <dependency>
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
@@ -27,6 +29,7 @@
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE270</version>
         </dependency>
+        
     </dependencies>
     
 </project>

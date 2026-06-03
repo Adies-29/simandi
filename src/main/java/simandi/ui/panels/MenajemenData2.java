@@ -382,7 +382,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     Anggota a = new Anggota();
     a.setUidRfid(txtUid.getText());
     a.setNamaLengkap(txtNama.getText());
-    a.setNimAnggota(txtNim.getText());
+    a.setNim(txtNim.getText());
     a.setKelas(txtKelas.getSelectedItem().toString());
     a.setJurusan(txtJurusan.getSelectedItem().toString());
     a.setStatus(comboStatus.getSelectedItem().toString());
@@ -399,7 +399,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
         Anggota a = new Anggota();
         a.setUidRfid(txtUid.getText());
         a.setNamaLengkap(txtNama.getText());
-        a.setNimAnggota(txtNim.getText());
+        a.setNim(txtNim.getText());
         a.setKelas(txtKelas.getSelectedItem().toString());
         a.setJurusan(txtJurusan.getSelectedItem().toString());
         a.setStatus(comboStatus.getSelectedItem().toString());
