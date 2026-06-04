@@ -8,13 +8,27 @@ package simandi.objek;
  *
  * @author Lenovo
  */
-public class anggota {
+public class Anggota {
 
     private String uidRfid;
-    private String NimAnggota;
+    private String Nim;
     private String namaLengkap;
     private String jurusan;
     private String kelas;
+    private String status;
+    
+    public Anggota(){
+        
+    }
+    
+    public Anggota(String uidRfid, String Nim, String namaLengkap, String jurusan, String kelas, String status) {
+    this.uidRfid = uidRfid;
+    this.Nim = Nim;
+    this.namaLengkap = namaLengkap;
+    this.jurusan = jurusan;
+    this.kelas = kelas;
+    this.status = status;
+}
 
     public String getUidRfid() {
         return uidRfid;
@@ -24,12 +38,12 @@ public class anggota {
         this.uidRfid = uidRfid;
     }
 
-    public String getNimAnggota() {
-        return NimAnggota;
+    public String getNim() {
+        return Nim;
     }
 
-    public void setNimAnggota(String NimAnggota) {
-        this.NimAnggota = NimAnggota;
+    public void setNim(String Nim) {
+        this.Nim = Nim;
     }
 
     public String getNamaLengkap() {
@@ -54,6 +68,14 @@ public class anggota {
 
     public void setKelas(String kelas) {
         this.kelas = kelas;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
