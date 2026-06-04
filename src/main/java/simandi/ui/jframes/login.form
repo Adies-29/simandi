@@ -158,6 +158,9 @@
                   <Font name="Constantia" size="18" style="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUsrnameActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
@@ -173,6 +176,9 @@
                   <Font name="Constantia" size="18" style="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPaswordActionPerformed"/>
+              </Events>
             </Component>
             <Container class="smd.swing.RoundPanel" name="roundPanel1">
               <Properties>
