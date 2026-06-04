@@ -40,7 +40,7 @@ public class AnggotaService2 {
         if (a != null) {
             DAO.update(filter, newA);
         } else {
-            JOptionPane.showMessageDialog(null, "Data dengan NIM " + newA.getNim() + " tidak ditemukan!");
+            JOptionPane.showMessageDialog(null, "Data dengan NIM " + newA.getNim()+ " tidak ditemukan!");
         }
     }
 

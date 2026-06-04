@@ -1,0 +1,15 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package simandi.util;
+
+/**
+ *
+ * @author Adies
+ */
+public class EncryptionUtils {
+    private static final String ALGORITHM = "AES";
+    
+    
+}
