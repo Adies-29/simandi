@@ -10,6 +10,7 @@ import org.bson.conversions.Bson;
 import simandi.DAO.GenericDAO;
 import simandi.objek.Anggota;
 import simandi.ui.panels.MenajemenData2;
+import simandi.util.EncryptionUtils;
 
 public class AnggotaService2 {
 
@@ -119,7 +120,7 @@ public class AnggotaService2 {
             // -- Bagian Tengah (Detail NIM, Kelas, Jurusan) --
             JPanel midPanel = new JPanel(new GridLayout(3, 1, 0, 3));
             midPanel.setOpaque(false);
-            midPanel.add(createInfoLabel("Nim: " + a.getNim()));
+            midPanel.add(createInfoLabel("Nim: " + EncryptionUtils.decrypt(a.getNim())));
             midPanel.add(createInfoLabel("Kelas: " + a.getKelas()));
             midPanel.add(createInfoLabel("Jurusan: " + a.getJurusan()));
 
@@ -130,8 +131,11 @@ public class AnggotaService2 {
             JButton btnEdit = createStyledButton("EDIT", new Color(52, 152, 219));
             btnEdit.addActionListener(e -> {
                 MenajemenData2.txtUid.setText(a.getUidRfid());
-                MenajemenData2.txtNim.setText(a.getNim());
-                MenajemenData2.txtNim.setEnabled(false); 
+                
+                String nimAsli = simandi.util.EncryptionUtils.decrypt(a.getNim());
+                MenajemenData2.txtNim.setText(nimAsli);
+                MenajemenData2.txtNim.setEnabled(false);
+                
                 MenajemenData2.txtNama.setText(a.getNamaLengkap());
                 MenajemenData2.txtKelas.setSelectedItem(a.getKelas());
                 MenajemenData2.txtJurusan.setSelectedItem(a.getJurusan());

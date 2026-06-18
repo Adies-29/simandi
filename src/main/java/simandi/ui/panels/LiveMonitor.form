@@ -37,8 +37,16 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="689" max="-2" attributes="0"/>
-                  <Component id="btnLaporan1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="689" max="-2" attributes="0"/>
+                          <Component id="btnLaporan1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="579" max="-2" attributes="0"/>
+                          <Component id="lblJam" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace pref="733" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -48,7 +56,9 @@
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   <Component id="btnLaporan1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="744" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblJam" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="694" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -60,6 +70,14 @@
               <Font name="MS UI Gothic" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Live Monitor"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblJam">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="24" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="00:00:00"/>
           </Properties>
         </Component>
       </SubComponents>
