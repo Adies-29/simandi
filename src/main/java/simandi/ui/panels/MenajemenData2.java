@@ -6,6 +6,8 @@ package simandi.ui.panels;
 
 import simandi.objek.Anggota;
 import simandi.service.AnggotaService2;
+import simandi.util.EncryptionUtils;
+import simandi.util.SecurityUtils;
 
 /**
  *
@@ -36,6 +38,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     txtUid.setText("");
     txtNama.setText("");
     txtNim.setText("");
+    txtNim.setEnabled(true);
 
     txtKelas.setSelectedIndex(0);
     txtJurusan.setSelectedIndex(0);
@@ -380,9 +383,9 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     private void btnSimpanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimpanMouseClicked
     // Buat objek dan ambil data dari inputan
     Anggota a = new Anggota();
-    a.setUidRfid(txtUid.getText());
+    a.setUidRfid(SecurityUtils.getHash(txtUid.getText(), SecurityUtils.SHA_256));
     a.setNamaLengkap(txtNama.getText());
-    a.setNim(txtNim.getText());
+    a.setNim(EncryptionUtils.encrypt(txtNim.getText()));
     a.setKelas(txtKelas.getSelectedItem().toString());
     a.setJurusan(txtJurusan.getSelectedItem().toString());
     a.setStatus(comboStatus.getSelectedItem().toString());

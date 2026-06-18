@@ -4,17 +4,25 @@
  */
 package simandi.ui.panels;
 
+import simandi.service.DigitalClockService;
+
 /**
  *
  * @author Adies
  */
 public class LiveMonitor extends javax.swing.JPanel {
+        
+    Thread clockThread1;
 
     /**
      * Creates new form NewJPanel
      */
     public LiveMonitor() {
         initComponents();
+        thread1();
+//        // Memanggil mesin jam dan menyambungkannya ke wadah label
+//        DigitalClockService jamService = new DigitalClockService(lblJam);
+//        jamService.start();
     }
 
     /**
@@ -28,19 +36,28 @@ public class LiveMonitor extends javax.swing.JPanel {
 
         gradient1 = new smd.swing.gradient();
         btnLaporan1 = new javax.swing.JLabel();
+        lblJam = new javax.swing.JLabel();
 
         gradient1.setPreferredSize(new java.awt.Dimension(1553, 790));
 
         btnLaporan1.setFont(new java.awt.Font("MS UI Gothic", 1, 24)); // NOI18N
         btnLaporan1.setText("Live Monitor");
 
+        lblJam.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblJam.setText("00:00:00");
+
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
         gradient1Layout.setHorizontalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
-                .addGap(689, 689, 689)
-                .addComponent(btnLaporan1)
+                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(689, 689, 689)
+                        .addComponent(btnLaporan1))
+                    .addGroup(gradient1Layout.createSequentialGroup()
+                        .addGap(579, 579, 579)
+                        .addComponent(lblJam)))
                 .addContainerGap(733, Short.MAX_VALUE))
         );
         gradient1Layout.setVerticalGroup(
@@ -48,7 +65,9 @@ public class LiveMonitor extends javax.swing.JPanel {
             .addGroup(gradient1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(btnLaporan1)
-                .addContainerGap(744, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblJam)
+                .addContainerGap(694, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -67,5 +86,14 @@ public class LiveMonitor extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnLaporan1;
     private smd.swing.gradient gradient1;
+    private javax.swing.JLabel lblJam;
     // End of variables declaration//GEN-END:variables
+
+    private void thread1() {
+        DigitalClockService service = new DigitalClockService(lblJam, "EEEE, d MMMM yyyy, HH:mm:ss");
+        clockThread1 = service.getThread();
+        clockThread1.setName("Thread-Jam-Kiosk2");
+        clockThread1.setDaemon(true);
+        clockThread1.start();
+    }
 }
