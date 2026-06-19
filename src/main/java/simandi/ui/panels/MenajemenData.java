@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import simandi.objek.Anggota;
+import simandi.objek.Anggota1;
 import simandi.service.AnggotaService;
 
 
@@ -97,10 +97,10 @@ public final class MenajemenData extends javax.swing.JPanel {
 
     model.setRowCount(0);
 
-    List<Anggota> list =
+    List<Anggota1> list =
             service.tampilSemuaAnggota();
 
-    for (Anggota a : list) {
+    for (Anggota1 a : list) {
 
         // SKIP kalau data kosong
         if (a == null
@@ -150,10 +150,10 @@ public final class MenajemenData extends javax.swing.JPanel {
 
     model.setRowCount(0);
 
-    List<Anggota> list =
+    List<Anggota1> list =
             service.searchAnggota(key);
 
-    for (Anggota a : list) {
+    for (Anggota1 a : list) {
 
         // SKIP data kosong
         if (a == null
@@ -588,7 +588,7 @@ public final class MenajemenData extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRefreshMouseClicked
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-        Anggota a = new Anggota();
+        Anggota1 a = new Anggota1();
 
         a.setUidRfid(txtUID.getText());
         a.setNamaLengkap(txtNama.getText());

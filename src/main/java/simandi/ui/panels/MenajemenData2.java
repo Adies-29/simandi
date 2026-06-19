@@ -4,7 +4,7 @@
  */
 package simandi.ui.panels;
 
-import simandi.objek.Anggota;
+import simandi.objek.Anggota1;
 import simandi.service.AnggotaService2;
 
 /**
@@ -379,7 +379,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
 
     private void btnSimpanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimpanMouseClicked
     // Buat objek dan ambil data dari inputan
-    Anggota a = new Anggota();
+    Anggota1 a = new Anggota1();
     a.setUidRfid(txtUid.getText());
     a.setNamaLengkap(txtNama.getText());
     a.setNim(txtNim.getText());
@@ -396,7 +396,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         // Ambil data yang sudah diedit di form                              
-        Anggota a = new Anggota();
+        Anggota1 a = new Anggota1();
         a.setUidRfid(txtUid.getText());
         a.setNamaLengkap(txtNama.getText());
         a.setNim(txtNim.getText());

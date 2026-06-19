@@ -8,35 +8,35 @@ import java.util.List;
 import javax.swing.*;
 import org.bson.conversions.Bson;
 import simandi.DAO.GenericDAO;
-import simandi.objek.Anggota;
+import simandi.objek.Anggota1;
 import simandi.ui.panels.MenajemenData2;
 
 public class AnggotaService2 {
 
-    private final GenericDAO<Anggota> DAO;
+    private final GenericDAO<Anggota1> DAO;
 
     public AnggotaService2() {
-        DAO = new GenericDAO<>("anggota", Anggota.class);
+        DAO = new GenericDAO<>("anggota", Anggota1.class);
     }
     
     /**
      * 1. CREATE: Simpan objek Anggota
      */
-    public void tambahAnggota(Anggota anggota) {
+    public void tambahAnggota(Anggota1 anggota) {
         DAO.save(anggota);
     }
     
     public void tambahAnggota(String uid, String nim, String nama, String kls, String jrs, String sts) {
-        Anggota a = new Anggota(uid, nim, nama, kls, jrs, sts);
+        Anggota1 a = new Anggota1(uid, nim, nama, kls, jrs, sts);
         DAO.save(a); 
     }
 
     /**
      * 2. UPDATE: Ubah data berdasarkan NIM
      */
-    public void updateAnggota(Anggota newA) {
+    public void updateAnggota(Anggota1 newA) {
         Bson filter = Filters.eq("nim", newA.getNim());
-        Anggota a = DAO.findOne(filter); 
+        Anggota1 a = DAO.findOne(filter); 
         if (a != null) {
             DAO.update(filter, newA);
         } else {
@@ -49,7 +49,7 @@ public class AnggotaService2 {
      */
     public void tampilAnggota(JPanel panelTarget, String key) {
         // Ambil data dari database
-        List<Anggota> daftarAnggota = (key == null || key.isEmpty()) ? DAO.findAll() : cariAnggota(key);
+        List<Anggota1> daftarAnggota = (key == null || key.isEmpty()) ? DAO.findAll() : cariAnggota(key);
 
         panelTarget.removeAll();
         panelTarget.setLayout(new BorderLayout());
@@ -60,7 +60,7 @@ public class AnggotaService2 {
         gridPanel.setOpaque(false);
         gridPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        for (Anggota a : daftarAnggota) {
+        for (Anggota1 a : daftarAnggota) {
             // --- CUSTOM CARD MODERN ---
             JPanel card = new JPanel() {
                 @Override
@@ -204,7 +204,7 @@ public class AnggotaService2 {
     /**
      * 4. SEARCH: Cari berdasarkan Nama, NIM, atau Jurusan
      */
-    public List<Anggota> cariAnggota(String key) {
+    public List<Anggota1> cariAnggota(String key) {
         List<Bson> filters = new ArrayList<>();
         filters.add(Filters.regex("namaLengkap", key, "i"));
         filters.add(Filters.regex("nim", key, "i"));

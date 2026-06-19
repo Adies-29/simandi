@@ -9,23 +9,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.bson.conversions.Bson;
 import simandi.DAO.GenericDAO;
-import simandi.objek.Anggota;
+import simandi.objek.Anggota1;
 
 public class AnggotaService {
 
-    private final GenericDAO<Anggota> DAO;
+    private final GenericDAO<Anggota1> DAO;
 
     public AnggotaService() {
-        DAO = new GenericDAO<>("anggota", Anggota.class);
+        DAO = new GenericDAO<>("anggota", Anggota1.class);
     }
 
     // 1. CREATE
-    public void tambahAnggota(Anggota a) {
+    public void tambahAnggota(Anggota1 a) {
 
         // cek NIM sudah ada atau belum
         Bson filter = Filters.eq("nim", a.getNim());
 
-        Anggota cek = DAO.findOne(filter);
+        Anggota1 cek = DAO.findOne(filter);
 
         if (cek != null) {
 
@@ -46,12 +46,12 @@ public class AnggotaService {
     }
 
     // 2. READ ALL
-    public List<Anggota> tampilSemuaAnggota() {
+    public List<Anggota1> tampilSemuaAnggota() {
         return DAO.findAll();
     }
 
     // 3. READ ONE
-    public Anggota cariAnggotaByNim(String nim) {
+    public Anggota1 cariAnggotaByNim(String nim) {
 
         Bson filter = Filters.eq("nim", nim);
 
@@ -59,11 +59,11 @@ public class AnggotaService {
     }
 
     // 4. SEARCH
-    public List<Anggota> searchAnggota(String key) {
+    public List<Anggota1> searchAnggota(String key) {
 
         List<Bson> filters = new ArrayList<>();
 
-        for (Field field : Anggota.class.getDeclaredFields()) {
+        for (Field field : Anggota1.class.getDeclaredFields()) {
 
             // skip field serialVersionUID kalau ada
             if (field.getName().equalsIgnoreCase("serialVersionUID")) {
@@ -85,12 +85,12 @@ public class AnggotaService {
     }
 
     // 5. UPDATE
-    public void updateAnggota(Anggota a) {
+    public void updateAnggota(Anggota1 a) {
 
         // cari data lama berdasarkan NIM
         Bson filter = Filters.eq("nim", a.getNim());
 
-        Anggota old = DAO.findOne(filter);
+        Anggota1 old = DAO.findOne(filter);
 
         if (old == null) {
 
@@ -137,7 +137,7 @@ public class AnggotaService {
     // 7. UI RENDER
     public void tampilAnggota(JPanel panelTarget, String key) {
 
-        List<Anggota> list;
+        List<Anggota1> list;
 
         if (key == null || key.isEmpty()) {
 
@@ -150,7 +150,7 @@ public class AnggotaService {
 
         panelTarget.removeAll();
 
-        for (Anggota a : list) {
+        for (Anggota1 a : list) {
 
             JPanel card = new JPanel(
                     new java.awt.GridLayout(4, 1)
