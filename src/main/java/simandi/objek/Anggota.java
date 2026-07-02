@@ -8,7 +8,7 @@ package simandi.objek;
  *
  * @author Lenovo
  */
-public class Anggota1 {
+public class Anggota {
 
     private String uidRfid;
     private String Nim;
@@ -17,11 +17,11 @@ public class Anggota1 {
     private String kelas;
     private String status;
     
-    public Anggota1(){
+    public Anggota(){
         
     }
     
-    public Anggota1(String uidRfid, String Nim, String namaLengkap, String jurusan, String kelas, String status) {
+    public Anggota(String uidRfid, String Nim, String namaLengkap, String jurusan, String kelas, String status) {
     this.uidRfid = uidRfid;
     this.Nim = Nim;
     this.namaLengkap = namaLengkap;
