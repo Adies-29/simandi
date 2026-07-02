@@ -4,6 +4,9 @@
  */
 package simandi.ui.jframes;
 
+import javax.swing.JOptionPane;
+import simandi.service.AuthService;
+
 /**
  *
  * @author Tya
@@ -19,6 +22,7 @@ public class login extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        txtUsrname.requestFocus();
     }
 
     /**
@@ -55,11 +59,21 @@ public class login extends javax.swing.JFrame {
         jLabel4.setText("Username");
 
         txtUsrname.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
+        txtUsrname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsrnameActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Constantia", 0, 20)); // NOI18N
         jLabel5.setText("Password");
 
         txtPasword.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
+        txtPasword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPaswordActionPerformed(evt);
+            }
+        });
 
         roundPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -167,38 +181,17 @@ public class login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        try {
-            // 1. Ambil input dari textfield
-            String username = txtUsrname.getText();
-            // Mengambil password dari JPasswordField
-            String password = new String(txtPasword.getPassword());
+    private void txtUsrnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsrnameActionPerformed
+       txtPasword.requestFocus();
+    }//GEN-LAST:event_txtUsrnameActionPerformed
 
-            // 2. Hubungkan ke database menggunakan MongoManager
-            com.mongodb.client.MongoDatabase db = simandi.util.MongoManager.getDatabase();
-            com.mongodb.client.MongoCollection<org.bson.Document> col = db.getCollection("admin");
+    private void txtPaswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaswordActionPerformed
+         doLogin();
+    }//GEN-LAST:event_txtPaswordActionPerformed
 
-            // 3. Cari data yang cocok
-            org.bson.Document query = new org.bson.Document("username", username)
-                    .append("password", password);
-            org.bson.Document user = col.find(query).first();
-
-            // 4. Cek hasil pencarian
-            if (user != null) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Login Berhasil!");
-
-                // Membuka halaman Monitoring
-                new dashboardAdmin().setVisible(true);
-                this.dispose();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Username atau Password Salah!");
-            }
-
-        } catch (java.lang.Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi Kesalahan: " + e.getMessage());
-        }        // TODO add your handling code here:
-    //GEN-LAST:event_btnLoginActionPerformed
-    }//GEN-LAST:event_jLabel6MouseClicked
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {                                     
+        doLogin();                             
+    }                                    
 
     /**
      * @param args the command line arguments
@@ -238,4 +231,21 @@ public class login extends javax.swing.JFrame {
     private smd.swing.RoundPasword txtPasword;
     private smd.swing.RoundText txtUsrname;
     // End of variables declaration//GEN-END:variables
+
+    private void doLogin() {
+        String username = txtUsrname.getText();
+        String password = new String(txtPasword.getPassword());
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi Username Anda");
+            txtUsrname.requestFocus();
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi Password Anda");
+            txtPasword.requestFocus();
+        } else {
+            AuthService userService = new AuthService();
+            userService.login(username, password, this);
+        }
+    }
 }
+
+

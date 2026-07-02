@@ -7,14 +7,14 @@ package simandi.service;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
-import com.ituhn.pemkom2.serial.SerialDataHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import simandi.serial.SerialDataHandler;
 
 /**
  *
- * @author Lenovo
+ * @author Adies
  */
 public class SerialService {
     private static SerialService instance;

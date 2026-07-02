@@ -7,13 +7,12 @@ package simandi.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
-
 /**
  *
- * @author mnish
+ * @author Adies
  */
 public class SecurityUtils {
+    
     // Konstanta pilihan algoritma SHA yang tersedia di JCA [3]
     public static final String SHA_1 = "SHA-1";
     public static final String SHA_224 = "SHA-224";

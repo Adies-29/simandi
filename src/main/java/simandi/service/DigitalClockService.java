@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author mnish
+ * @author Adies
  */
 
 /**

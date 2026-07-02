@@ -157,7 +157,7 @@ public final class MenajemenData extends javax.swing.JPanel {
 
         // SKIP data kosong
         if (a == null
-                || a.getNim() == null
+                || a.getNim()== null
                 || a.getNim().trim().isEmpty()) {
             continue;
         }

@@ -6,7 +6,7 @@ package simandi.serial;
 
 /**
  *
- * @author mnish
+ * @author Adies
  * @param <T>
  */
 public interface SerialDataHandler<T> {
