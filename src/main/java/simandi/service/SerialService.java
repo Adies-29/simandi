@@ -20,16 +20,17 @@ public class SerialService {
     private static SerialService instance;
     private SerialPort activePort;
     private final List<SerialDataHandler<String>> handlers = new ArrayList<>();
-    
+
+    // Private constructor untuk Singleton
     private SerialService() {}
-    
+
     public static synchronized SerialService getInstance() {
         if (instance == null) {
             instance = new SerialService();
         }
         return instance;
     }
-    
+
     /**
      * Menambahkan handler baru ke dalam daftar observer.
      * @param handler
@@ -39,6 +40,7 @@ public class SerialService {
             handlers.add(handler);
         }
     }
+
     /**
      * Menghapus handler (penting untuk mencegah memory leak saat frame ditutup).
      * @param handler
@@ -46,7 +48,7 @@ public class SerialService {
     public void removeHandler(SerialDataHandler<String> handler) {
         handlers.remove(handler);
     }
-    
+
     /**
      * Membuka koneksi ke port serial.
      * @param portName
@@ -75,6 +77,7 @@ public class SerialService {
             return false;
         }
     }
+
     /**
      * Mengatur listener event untuk mendeteksi data masuk secara otomatis.
      */
@@ -103,6 +106,7 @@ public class SerialService {
             }
         });
     }
+
     /**
      * Mengirimkan data ke semua handler yang terdaftar.
      */
@@ -111,15 +115,17 @@ public class SerialService {
             handler.onDataReceived(data);
         }
     }
+
     public void disconnect() {
         if (activePort != null && activePort.isOpen()) {
             activePort.removeDataListener();
             activePort.closePort();
             System.out.println("INFO: Port ditutup.");
-       
         }
     }
+
     public boolean isConnected() {
         return activePort != null && activePort.isOpen();
     }
+    
 }

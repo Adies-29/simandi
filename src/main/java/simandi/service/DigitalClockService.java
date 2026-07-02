@@ -19,22 +19,22 @@ import javax.swing.JLabel;
  * Target: Sub-CPMK 5 (Concurrency Management) [1].
  */
 public class DigitalClockService {
-    
+
     private final JLabel targetLabel;
     private final String pattern;
-    
+
     public DigitalClockService(JLabel targetLabel, String pattern) {
         this.targetLabel = targetLabel;
         this.pattern = pattern;
     }
-    
+
     /**
      * Menyiapkan objek Thread tanpa langsung menjalankannya.
      * @return Objek Thread dalam fase 'New' [3].
      */
     public Thread getThread() {
         Runnable clockTask = () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern,new Locale("id", "ID"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.of("id", "ID"));
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     LocalDateTime now = LocalDateTime.now();
@@ -54,3 +54,4 @@ public class DigitalClockService {
         return new Thread(clockTask);
     }
 }
+
