@@ -223,4 +223,9 @@ public class AnggotaService2 {
         Bson filter = Filters.eq("nim", nim);
         DAO.delete(filter);
     }
+    
+    public Anggota cariAnggotaByUid(String uidRfid) {
+        Bson filter = Filters.eq("uidRfid", uidRfid);
+        return DAO.findOne(filter);
+    }
 }

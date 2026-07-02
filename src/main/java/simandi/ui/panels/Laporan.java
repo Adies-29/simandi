@@ -15,6 +15,39 @@ public class Laporan extends javax.swing.JPanel {
      */
     public Laporan() {
         initComponents();
+         loadDataLaporan();
+    }
+     /**
+     * Method untuk membaca riwayat absensi dari MongoDB dan menaruhnya di tabel
+     */
+    public void loadDataLaporan() {
+        try {
+            simandi.service.LogAbsensiService logService = new simandi.service.LogAbsensiService();
+            java.util.List<simandi.objek.LogAbsensi> daftarLog = logService.ambilSemuaLog();
+            simandi.service.AnggotaService2 anggotaService = new simandi.service.AnggotaService2();
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUser.getModel();
+            model.setRowCount(0); // Bersihkan baris tabel lama
+            for (simandi.objek.LogAbsensi log : daftarLog) {
+                // Cari data anggota lengkap untuk mendapatkan NIM terdekripsi, Kelas, dan Jurusan
+                simandi.objek.Anggota a = anggotaService.cariAnggotaByUid(log.getUidRfid());
+                String nimAsli = (a != null && a.getNim() != null) ? simandi.util.EncryptionUtils.decrypt(a.getNim()) : "-";
+                String kelas = (a != null) ? a.getKelas() : "-";
+                String jurusan = (a != null) ? a.getJurusan() : "-";
+                model.addRow(new Object[]{
+                    log.getUidRfid(),
+                    log.getNamaLengkap(),
+                    nimAsli,
+                    kelas,
+                    jurusan,
+                    log.getStatus(),
+                    log.getLocalDateTimewaktuTap() // Tampilkan jam & tanggal di kolom Aksi
+                });
+            }
+            System.out.println("DEBUG: Berhasil memuat " + daftarLog.size() + " data ke tabel Laporan.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Gagal memuat data laporan: " + e.getMessage());
+        }
     }
 
     /**
@@ -150,7 +183,7 @@ public class Laporan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLaporanMouseClicked
-
+        loadDataLaporan();
     }//GEN-LAST:event_btnLaporanMouseClicked
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
