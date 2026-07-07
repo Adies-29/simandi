@@ -4,14 +4,14 @@
  */
 package simandi.ui.panels;
 
-import com.ituhn.pemkom2.gui.panel.Settings;
+import simandi.ui.panels.Setting;
 import simandi.ui.panels.MenajemenData;
 import simandi.service.DigitalClockService;
 import simandi.service.AnggotaService2;
 import simandi.objek.LogAbsensi;
-import com.ituhn.pemkom2.services.SerialService;
-import com.ituhn.pemkom2.util.EncryptionUtils;
-import com.ituhn.pemkom2.util.SecurityUtils;
+import simandi.service.SerialService;
+import simandi.util.EncryptionUtils;
+import simandi.util.SecurityUtils;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 

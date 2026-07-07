@@ -22,16 +22,35 @@ public class page1 extends javax.swing.JFrame {
      * Creates new form page1
      */
     public page1() {
-        initComponents();
+         initComponents();
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         
-        Timer timer = new Timer(4000, e -> {
-            new login().setVisible(true); // buka login
-            this.dispose(); // tutup splash
-        });
+        // --- 1. BUAT BACKGROUND THREAD UNTUK SPLASH SCREEN ---
+        Thread splashThread = new Thread(() -> {
+            try {
+                System.out.println("--> [THREAD-SPLASH] Memulai inisialisasi aplikasi SIMANDI di background...");
+                
+                // (Opsional) Kamu bisa memanggil koneksi database di sini agar aplikasi siap pakai:
+                // simandi.util.MongoManager.getDatabase(); 
+                
+                // Tahan layar Splash selama 3.5 detik agar logo terlihat jelas & elegan
+                Thread.sleep(3500); 
+                
+                System.out.println("--> [THREAD-SPLASH] Inisialisasi selesai. Mengalihkan ke form Login...");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                // --- 2. KEMBALI KE UI THREAD (EDT): Tutup Splash & Buka Login ---
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    new login().setVisible(true); // Buka layar Login
+                    page1.this.dispose();         // Tutup Splash Screen ini
+                });
+            }
+        }, "Thread-Splash-Loader"); // Kita beri nama thread-nya untuk bukti presentasi!
 
-        timer.setRepeats(false);
-        timer.start();
+        // Jadikan daemon thread agar otomatis mati jika aplikasi ditutup paksa
+        splashThread.setDaemon(true);
+        splashThread.start();
     }
 
     /**

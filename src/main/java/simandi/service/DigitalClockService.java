@@ -34,7 +34,7 @@ public class DigitalClockService {
      */
     public Thread getThread() {
         Runnable clockTask = () -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.of("id", "ID"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, new Locale("id", "ID"));
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     LocalDateTime now = LocalDateTime.now();
