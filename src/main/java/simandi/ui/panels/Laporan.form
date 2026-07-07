@@ -110,7 +110,7 @@
                         <Column editable="true" title="Kelas" type="java.lang.String"/>
                         <Column editable="true" title="Jurusan" type="java.lang.String"/>
                         <Column editable="true" title="Status Anggota" type="java.lang.String"/>
-                        <Column editable="true" title="Aksi" type="java.lang.String"/>
+                        <Column editable="true" title="Waktu" type="java.lang.String"/>
                       </Table>
                     </Property>
                   </Properties>

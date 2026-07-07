@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel; 
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import simandi.ui.dialogs.logout;
 import simandi.ui.jframes.login;
@@ -204,10 +205,10 @@ public class dashboardAdmin extends javax.swing.JFrame implements simandi.servic
                 .addGap(20, 20, 20)
                 .addComponent(buttonBadges5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72)
-                .addComponent(btnSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 641, Short.MAX_VALUE)
+                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(135, 135, 135)
+                .addComponent(btnSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 489, Short.MAX_VALUE)
                 .addComponent(buttonBadges6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -372,13 +373,14 @@ public class dashboardAdmin extends javax.swing.JFrame implements simandi.servic
     
      @Override
     public void onLanguageChanged() {
-        // Ganti tulisan menu navigasi atas sesuai file .properties!
-        btnLive.setText(simandi.service.BahasaService.get("ui.sidebar.attendance"));
-        btnData.setText(simandi.service.BahasaService.get("ui.sidebar.masterdata"));
-        btnLaporan.setText(simandi.service.BahasaService.get("ui.sidebar.report"));
-        btnSetting.setText(simandi.service.BahasaService.get("ui.sidebar.settings"));
-        // Refresh layar
-        this.revalidate();
-        this.repaint();
+         SwingUtilities.invokeLater(()->{
+            btnLive.setText(simandi.service.BahasaService.get("ui.menu.attendance"));
+            btnData.setText(simandi.service.BahasaService.get("ui.menu.masterdata"));
+            btnLaporan.setText(simandi.service.BahasaService.get("ui.menu.report"));
+            btnSetting.setText(simandi.service.BahasaService.get("ui.menu.settings"));
+            // Refresh layar
+            this.revalidate();
+            this.repaint(); 
+         });
     }
 }
