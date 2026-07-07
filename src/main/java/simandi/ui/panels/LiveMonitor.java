@@ -4,14 +4,16 @@
  */
 package simandi.ui.panels;
 
+import javax.swing.JPanel;
+import simandi.service.AnggotaService2;
 import simandi.service.DigitalClockService;
 
 /**
  *
  * @author Adies
  */
-public class LiveMonitor extends javax.swing.JPanel {
-        
+public class LiveMonitor extends javax.swing.JPanel implements simandi.serial.SerialDataHandler<String>, simandi.service.BahasaService.bahasaChangeListener {
+
     Thread clockThread1;
 
     /**
@@ -19,10 +21,27 @@ public class LiveMonitor extends javax.swing.JPanel {
      */
     public LiveMonitor() {
         initComponents();
+        simandi.service.BahasaService.registerListener(this);
+        onLanguageChanged();
         thread1();
-//        // Memanggil mesin jam dan menyambungkannya ke wadah label
-//        DigitalClockService jamService = new DigitalClockService(lblJam);
-//        jamService.start();
+        cardPanel.setBorder(null);
+        cardPanel.setOpaque(false);
+        cardPanel.removeAll();
+        cardPanel.revalidate();
+        cardPanel.repaint();
+        loadRiwayatKartu();
+
+        // =====================================================================
+        // 1. KONEKSI KE ALAT RFID FISIK (HARDWARE)
+        // =====================================================================
+        simandi.service.SerialService.getInstance().addHandler(this);
+        System.out.println("=======================================================================");
+        System.out.println("✅ [STATUS BROADCAST] Live Monitoring Sudah ter-broadcast oleh SerialService!");
+        System.out.println("✅ [HARDWARE SIAP] Menunggu tempelan kartu RFID fisik dari alat...");
+        System.out.println("=======================================================================");
+
+        // Buka koneksi ke port COM alat scanner (Ganti "COM3" sesuai port USB alatmu di Windows Device Manager)
+//        simandi.service.SerialService.getInstance().connect("COM3", 9600);
     }
 
     /**
@@ -35,16 +54,38 @@ public class LiveMonitor extends javax.swing.JPanel {
     private void initComponents() {
 
         gradient1 = new smd.swing.gradient();
+        cardPanel = new javax.swing.JPanel();
         btnLaporan1 = new javax.swing.JLabel();
         lblJam = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         gradient1.setPreferredSize(new java.awt.Dimension(1553, 790));
+
+        cardPanel.setOpaque(false);
+
+        javax.swing.GroupLayout cardPanelLayout = new javax.swing.GroupLayout(cardPanel);
+        cardPanel.setLayout(cardPanelLayout);
+        cardPanelLayout.setHorizontalGroup(
+            cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 305, Short.MAX_VALUE)
+        );
+        cardPanelLayout.setVerticalGroup(
+            cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 231, Short.MAX_VALUE)
+        );
 
         btnLaporan1.setFont(new java.awt.Font("MS UI Gothic", 1, 24)); // NOI18N
         btnLaporan1.setText("Live Monitor");
 
         lblJam.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblJam.setText("00:00:00");
+
+        jButton1.setText("Simulasi TAP");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout gradient1Layout = new javax.swing.GroupLayout(gradient1);
         gradient1.setLayout(gradient1Layout);
@@ -54,20 +95,34 @@ public class LiveMonitor extends javax.swing.JPanel {
                 .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(gradient1Layout.createSequentialGroup()
                         .addGap(689, 689, 689)
-                        .addComponent(btnLaporan1))
+                        .addComponent(btnLaporan1)
+                        .addGap(153, 153, 153)
+                        .addComponent(jButton1))
                     .addGroup(gradient1Layout.createSequentialGroup()
                         .addGap(579, 579, 579)
                         .addComponent(lblJam)))
-                .addContainerGap(733, Short.MAX_VALUE))
+                .addContainerGap(482, Short.MAX_VALUE))
+            .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gradient1Layout.createSequentialGroup()
+                    .addGap(267, 267, 267)
+                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(981, Short.MAX_VALUE)))
         );
         gradient1Layout.setVerticalGroup(
             gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradient1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(btnLaporan1)
+                .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLaporan1)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(lblJam)
                 .addContainerGap(694, Short.MAX_VALUE))
+            .addGroup(gradient1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gradient1Layout.createSequentialGroup()
+                    .addGap(108, 108, 108)
+                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(451, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -82,10 +137,49 @@ public class LiveMonitor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String inputUid = javax.swing.JOptionPane.showInputDialog(this, "Masukkan UID Kartu (Contoh: 12345):");
+        if (inputUid != null && !inputUid.trim().isEmpty()) {
+            String uidInput = inputUid.trim();
+            System.out.println("--> [STEP 1] Mencari UID di MongoDB: " + uidInput);
+            try {
+                simandi.service.AnggotaService2 service = new simandi.service.AnggotaService2();
+                simandi.objek.Anggota anggota = service.cariAnggotaByUid(uidInput);
+                if (anggota != null) {
+                    System.out.println("--> [STEP 2] Data Ditemukan! Nama: " + anggota.getNamaLengkap());
+                    System.out.println("--> [STEP 3] Membangun UI Kartu...");
+
+                    // Panggil method pembuat kartu
+                    tampilKartuAbsensi(anggota, null);
+
+                    // Paksa refresh seluruh layar agar pasti muncul!
+                    cardPanel.setVisible(true);
+                    cardPanel.revalidate();
+                    cardPanel.repaint();
+                    this.revalidate();
+                    this.repaint();
+                    simandi.service.LogAbsensiService logService = new simandi.service.LogAbsensiService();
+                    logService.simpanLog(anggota.getUidRfid(), anggota.getNamaLengkap(), "Berhasil Masuk");
+                    System.out.println("--> [STEP 4] SUKSES! Kartu berhasil dimasukkan ke layar.");
+                } else {
+                    System.out.println("--> [STEP 2] GAGAL: UID " + uidInput + " tidak ada di database MongoDB.");
+                    javax.swing.JOptionPane.showMessageDialog(this, "UID Kartu [" + uidInput + "] tidak ditemukan di MongoDB!", "Data Tidak Ada", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(this, "Terjadi Error saat memuat kartu:\n" + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("--> [CANCEL] Input dibatalkan oleh user.");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnLaporan1;
+    private javax.swing.JPanel cardPanel;
     private smd.swing.gradient gradient1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblJam;
     // End of variables declaration//GEN-END:variables
 
@@ -95,5 +189,307 @@ public class LiveMonitor extends javax.swing.JPanel {
         clockThread1.setName("Thread-Jam-Kiosk2");
         clockThread1.setDaemon(true);
         clockThread1.start();
+    }
+
+    // Variabel wadah internal untuk menampung daftar kartu yang bertumpuk
+    // Variabel wadah internal untuk menampung daftar kartu berbaris menyamping (Grid)
+    private javax.swing.JPanel feedPanel = null;
+
+    /**
+     * Method TUNGGAL untuk memunculkan Kartu Berbaris Menyamping (Grid 4 Kolom)
+     */
+    private void tampilKartuAbsensi(simandi.objek.Anggota a, String waktuScanAsli) {
+        // 1. JIKA INI KARTU PERTAMA: Siapkan wadah Grid 4 Kolom dengan ScrollPane
+        if (feedPanel == null || cardPanel.getComponentCount() == 0) {
+            cardPanel.removeAll();
+            cardPanel.setLayout(new java.awt.BorderLayout());
+            cardPanel.setBorder(null);
+
+            // Wadah Grid: 0 baris (otomatis nambah ke bawah), 4 kolom ke samping, jarak spasi 15px
+            feedPanel = new javax.swing.JPanel();
+            feedPanel.setLayout(new java.awt.GridLayout(0, 4, 15, 15));
+            feedPanel.setOpaque(false);
+            feedPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+            // Bungkus dengan ScrollPane supaya bisa di-scroll ke bawah kalau barisnya sudah penuh
+            javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(feedPanel);
+            scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scroll.setBorder(null);
+            scroll.setViewportBorder(null);
+            scroll.setBorder(null);
+            scroll.setOpaque(false);
+            scroll.getViewport().setOpaque(false);
+            scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+            cardPanel.add(scroll, java.awt.BorderLayout.CENTER);
+        }
+
+        // --- CUSTOM CARD DENGAN SHADOW & HEADER ACCENT KHAS BUATANMU ---
+        javax.swing.JPanel card = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Shadow lembut
+                g2.setColor(new java.awt.Color(0, 0, 0, 15));
+                g2.fillRoundRect(5, 5, getWidth() - 10, getHeight() - 10, 20, 20);
+
+                // Body Putih Bersih
+                g2.setColor(java.awt.Color.WHITE);
+                g2.fillRoundRect(0, 0, getWidth() - 10, getHeight() - 10, 20, 20);
+
+                // Header Accent Biru
+                g2.setColor(new java.awt.Color(52, 152, 219, 50));
+                g2.fill((java.awt.Shape) new java.awt.geom.RoundRectangle2D.Double(0, 0, getWidth() - 10, 12, 20, 20));
+                g2.fillRect(0, 6, getWidth() - 10, 6);
+
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+
+        card.setOpaque(false);
+        card.setLayout(new java.awt.BorderLayout(0, 10));
+        card.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Kunci tinggi & lebar kartu agar pas di dalam kotak Grid
+        card.setPreferredSize(new java.awt.Dimension(250, 170));
+
+        // -- Bagian Atas (Nama & Status Badge) --
+        javax.swing.JPanel topPanel = new javax.swing.JPanel(new java.awt.BorderLayout());
+        topPanel.setOpaque(false);
+
+        javax.swing.JLabel lblNama = new javax.swing.JLabel(a.getNamaLengkap().toUpperCase());
+        lblNama.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 15));
+        lblNama.setForeground(new java.awt.Color(44, 62, 80));
+
+        String status = a.getStatus();
+        String teksBadge = status.equalsIgnoreCase("Aktif")
+                ? simandi.service.BahasaService.get("ui.card.status.active")
+                : simandi.service.BahasaService.get("ui.card.status.inactive");
+        javax.swing.JLabel lblBadge = new javax.swing.JLabel(teksBadge);
+        lblBadge.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 10));
+        lblBadge.setOpaque(true);
+        lblBadge.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBadge.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 8, 3, 8));
+
+        if (status.equalsIgnoreCase("Aktif")) {
+            lblBadge.setBackground(new java.awt.Color(232, 247, 235));
+            lblBadge.setForeground(new java.awt.Color(40, 167, 69));
+        } else {
+            lblBadge.setBackground(new java.awt.Color(253, 237, 236));
+            lblBadge.setForeground(new java.awt.Color(231, 76, 60));
+        }
+        topPanel.add(lblNama, java.awt.BorderLayout.WEST);
+        topPanel.add(lblBadge, java.awt.BorderLayout.EAST);
+
+        // -- Bagian Tengah (Detail NIM terdekripsi, Kelas, Jurusan) --
+        javax.swing.JPanel midPanel = new javax.swing.JPanel(new java.awt.GridLayout(3, 1, 0, 4));
+        midPanel.setOpaque(false);
+
+        String nimAsli = simandi.util.EncryptionUtils.decrypt(a.getNim());
+
+        javax.swing.JLabel lblNim = new javax.swing.JLabel(simandi.service.BahasaService.get("ui.card.nim") + nimAsli);
+        lblNim.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 13));
+        lblNim.setForeground(new java.awt.Color(80, 85, 90));
+        midPanel.add(lblNim);
+
+        javax.swing.JLabel lblKelas = new javax.swing.JLabel(simandi.service.BahasaService.get("ui.card.class") + a.getKelas());
+        lblKelas.setFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 12));
+        lblKelas.setForeground(new java.awt.Color(100, 105, 110));
+        midPanel.add(lblKelas);
+        
+        
+        String jurusanTerjemahan = terjemahkanJurusan(a.getJurusan());
+        javax.swing.JLabel lblJurusan = new javax.swing.JLabel(simandi.service.BahasaService.get("ui.card.major") + jurusanTerjemahan);
+        lblJurusan.setFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 12));
+        lblJurusan.setForeground(new java.awt.Color(100, 105, 110));
+        midPanel.add(lblJurusan);
+
+        // -- Bagian Bawah (Waktu Scan & Status Sukses) --
+        javax.swing.JPanel botPanel = new javax.swing.JPanel(new java.awt.BorderLayout());
+        botPanel.setOpaque(false);
+        botPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(230, 230, 230)));
+
+        String jamTampil;
+        if (waktuScanAsli != null && !waktuScanAsli.isEmpty() && waktuScanAsli.contains(" ")) {
+            try {
+                // Mengubah "2026-07-04 21:25:30 WIB" menjadi "21:25 WIB"
+                String[] parts = waktuScanAsli.split(" ");
+                jamTampil = parts[1].substring(0, 5) + " WIB";
+            } catch (Exception e) {
+                jamTampil = waktuScanAsli;
+            }
+        } else {
+            // Jika scan baru saja terjadi detik ini secara live:
+            java.time.LocalTime now = java.time.LocalTime.now();
+            jamTampil = String.format("%02d:%02d WIB", now.getHour(), now.getMinute());
+        }
+
+        java.time.LocalTime now = java.time.LocalTime.now();
+        String jamScan = String.format("%02d:%02d WIB", now.getHour(), now.getMinute());
+
+        javax.swing.JLabel lblWaktu = new javax.swing.JLabel("🕒 " + jamTampil);
+        lblWaktu.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 12));
+        lblWaktu.setForeground(new java.awt.Color(52, 152, 219));
+
+       javax.swing.JLabel lblSukses = new javax.swing.JLabel(simandi.service.BahasaService.get("ui.card.status.in"));
+        lblSukses.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 11));
+        lblSukses.setForeground(new java.awt.Color(40, 167, 69));
+
+        botPanel.add(lblWaktu, java.awt.BorderLayout.WEST);
+        botPanel.add(lblSukses, java.awt.BorderLayout.EAST);
+
+        card.add(topPanel, java.awt.BorderLayout.NORTH);
+        card.add(midPanel, java.awt.BorderLayout.CENTER);
+        card.add(botPanel, java.awt.BorderLayout.SOUTH);
+
+        // =====================================================================
+        // RAHASIA GRID: Masukkan ke indeks 0 (Kiri Atas), kartu lama tergeser ke kanan!
+        // =====================================================================
+        feedPanel.add(card, 0);
+
+        // Refresh tampilan
+        feedPanel.revalidate();
+        feedPanel.repaint();
+        cardPanel.revalidate();
+        cardPanel.repaint();
+        gradient1.revalidate();
+        gradient1.repaint();
+    }
+
+    public void loadRiwayatKartu() {
+        Thread loaderThread = new Thread(() -> {
+            System.out.println("--> [THREAD-RIWAYAT] Memuat riwayat kehadiran HARI INI dari MongoDB...");
+            try {
+                simandi.service.LogAbsensiService logService = new simandi.service.LogAbsensiService();
+                java.util.List<simandi.objek.LogAbsensi> daftarLog = logService.ambilSemuaLog();
+                simandi.service.AnggotaService2 anggotaService = new simandi.service.AnggotaService2();
+
+                // 1. Ambil format tanggal hari ini persis (Contoh: "2026-07-04")
+                java.time.LocalDate today = java.time.LocalDate.now();
+                String tanggalHariIni = String.format("%04d-%02d-%02d", today.getYear(), today.getMonthValue(), today.getDayOfMonth());
+
+                int hitungHariIni = 0;
+                for (simandi.objek.LogAbsensi log : daftarLog) {
+                    // 2. FILTER PINTAR: Cek apakah log ini terjadi PADA HARI INI?
+                    if (log.getLocalDateTimewaktuTap() != null && log.getLocalDateTimewaktuTap().startsWith(tanggalHariIni)) {
+                        simandi.objek.Anggota a = anggotaService.cariAnggotaByUid(log.getUidRfid());
+                        if (a != null) {
+                            hitungHariIni++;
+                            javax.swing.SwingUtilities.invokeLater(() -> {
+                                tampilKartuAbsensi(a, log.getLocalDateTimewaktuTap());
+                            });
+                        }
+                    }
+                }
+                System.out.println("--> [THREAD-RIWAYAT] Sukses! Menampilkan " + hitungHariIni + " pengunjung untuk tanggal " + tanggalHariIni);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, "Thread-Riwayat-Loader");
+
+        loaderThread.setDaemon(true);
+        loaderThread.start();
+    }
+
+    public JPanel getCardPanel() {
+        return cardPanel;
+    }
+
+    @Override
+    public void onLanguageChanged() {
+        // =====================================================================
+        // MULTI-THREADING (Sub-CPMK 5: Concurrency Management)
+        // Proses pembacaan kamus bahasa dilakukan di Thread latar belakang!
+        // =====================================================================
+        Thread i18nThread = new Thread(() -> {
+            System.out.println("--> [THREAD-I18N] Membaca kamus bahasa baru di latar belakang...");
+
+            // 1. Ambil terjemahan teks di background thread (tidak membebani UI)
+            String judulBaru = simandi.service.BahasaService.get("ui.monitor.title");
+            String tombolBaru = simandi.service.BahasaService.get("ui.monitor.btn.sim");
+
+            // 2. Seberangkan hasil terjemahan ke Thread UI (EDT) untuk dipasang ke layar:
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                btnLaporan1.setText(judulBaru);
+                jButton1.setText(tombolBaru);
+
+                // 3. Panggil pemuat kartu absensi (yang juga bekerja dengan Threadnya sendiri)
+                loadRiwayatKartu();
+
+                // Refresh layar NetBeans
+                this.revalidate();
+                this.repaint();
+                System.out.println("--> [THREAD-I18N] Sukses! Antarmuka Live Monitor selesai diterjemahkan.");
+            });
+        }, "Thread-I18n-Translator");
+
+        // Set sebagai Daemon Thread agar aman dan ringan
+        i18nThread.setDaemon(true);
+        i18nThread.start();
+    }
+    private String terjemahkanJurusan(String jurusanAsli) {
+        if (jurusanAsli == null || jurusanAsli.trim().isEmpty()) return "-";
+        
+        try {
+            // Cocokkan jurusan dari database dengan kunci kamus di .properties
+            if (jurusanAsli.equalsIgnoreCase("Teknik Informatika")) {
+                return simandi.service.BahasaService.get("ui.major.ti");
+            } else if (jurusanAsli.equalsIgnoreCase("Sistem Informasi")) {
+                return simandi.service.BahasaService.get("ui.major.si");
+            } else if (jurusanAsli.equalsIgnoreCase("Teknik Komputer")) {
+                return simandi.service.BahasaService.get("ui.major.tk");
+            } else if (jurusanAsli.equalsIgnoreCase("Manajemen Informatika")) {
+                return simandi.service.BahasaService.get("ui.major.mi");
+            } else if (jurusanAsli.equalsIgnoreCase("Teknik Elektro")) {
+                return simandi.service.BahasaService.get("ui.major.te");
+            }
+        } catch (Exception e) {
+            return jurusanAsli;
+        }
+        
+        return jurusanAsli;
+    }
+
+    /**
+     * METHOD OTOMATIS: Dijalankan oleh sistem setiap kali alat RFID fisik
+     * membaca kartu!
+     */
+    public void onDataReceived(String rawUid) {
+        // Wajib gunakan invokeLater agar aman saat memunculkan kartu di layar NetBeans
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            String uidScan = rawUid.trim();
+            System.out.println("--> [HARDWARE SCAN] Kartu RFID Fisik Terdeteksi: " + uidScan);
+
+            try {
+                // 1. Hash UID dari alat scanner agar formatnya sama dengan di MongoDB
+                String uidHashed = simandi.util.EncryptionUtils.encrypt(uidScan);
+
+                // 2. Cari data mahasiswa di database MongoDB
+                simandi.service.AnggotaService2 service = new simandi.service.AnggotaService2();
+                simandi.objek.Anggota anggota = service.cariAnggotaByUid(uidHashed);
+
+                if (anggota != null) {
+                    System.out.println("--> [SUKSES] Anggota Ditemukan: " + anggota.getNamaLengkap());
+
+                    // 3. Munculkan kartu di layar Live Monitor!
+                    tampilKartuAbsensi(anggota, null);
+
+                    // 4. Simpan log kedatangan ke MongoDB (log_absensi)
+                    simandi.service.LogAbsensiService logService = new simandi.service.LogAbsensiService();
+                    logService.simpanLog(anggota.getUidRfid(), anggota.getNamaLengkap(), "Berhasil Masuk");
+                } else {
+                    System.out.println("--> [GAGAL] Kartu [" + uidScan + "] tidak terdaftar!");
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "Kartu RFID [" + uidScan + "] tidak terdaftar di sistem!",
+                            "Kartu Tidak Dikenal", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

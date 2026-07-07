@@ -38,6 +38,9 @@ public class SerialService {
     public void addHandler(SerialDataHandler<String> handler) {
         if (!handlers.contains(handler)) {
             handlers.add(handler);
+            // Tambahkan baris print bukti ini:
+            System.out.println("✅ [SERIAL SERVICE] Berhasil mem-broadcast ke halaman -> " + handler.getClass().getSimpleName());
+        
         }
     }
 
@@ -110,7 +113,7 @@ public class SerialService {
     /**
      * Mengirimkan data ke semua handler yang terdaftar.
      */
-    private void broadcast(String data) {
+    public void broadcast(String data) {
         for (SerialDataHandler<String> handler : handlers) {
             handler.onDataReceived(data);
         }

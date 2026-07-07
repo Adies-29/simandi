@@ -13,40 +13,43 @@ import simandi.util.SecurityUtils;
  *
  * @author Tya
  */
-public final class MenajemenData2 extends javax.swing.JPanel {
+public final class MenajemenData2 extends javax.swing.JPanel implements simandi.service.BahasaService.bahasaChangeListener {
 
     /**
      * Creates new form MenajemenData2
      */
-    private final AnggotaService2 service =
-        new AnggotaService2();
-    
-    public MenajemenData2() {
-    initComponents();
+    private final AnggotaService2 service
+            = new AnggotaService2();
 
-    showData(""); 
-}
-    
+    public MenajemenData2() {
+        initComponents();
+        renderLang();
+        simandi.service.BahasaService.registerListener(this);
+        onLanguageChanged();
+
+        showData("");
+    }
+
     public void showData(String key) {
-    service.tampilAnggota(panelCard, key);
-}
-    
+        service.tampilAnggota(panelCard, key);
+    }
+
     private void refresAll() {
 
-    showData("");
+        showData("");
 
-    txtUid.setText("");
-    txtNama.setText("");
-    txtNim.setText("");
-    txtNim.setEnabled(true);
+        txtUid.setText("");
+        txtNama.setText("");
+        txtNim.setText("");
+        txtNim.setEnabled(true);
 
-    txtKelas.setSelectedIndex(0);
-    txtJurusan.setSelectedIndex(0);
-    comboStatus.setSelectedIndex(0);
+        txtKelas.setSelectedIndex(0);
+        txtJurusan.setSelectedIndex(0);
+        comboStatus.setSelectedIndex(0);
 
-    btnSimpan.setText("Simpan");
+        btnSimpan.setText("Simpan");
 
-}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,7 +93,7 @@ public final class MenajemenData2 extends javax.swing.JPanel {
         jLabel15.setText("Status");
 
         txtJurusan.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        txtJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih Jurusan --", "Teknik Informatika", "Sistem Informasi", "Teknik Komputer", "Manajemen Informatika", "Teknik Elektro", "Teknik Mesin", "Akuntansi", "Manajemen", "Bisnis Digital" }));
+        txtJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ui.combo.major", "ui.major.ti", "ui.major.si", "ui.major.tk", "ui.major.mi", "ui.major.te", "ui.major.tm", "ui.major.ak" }));
         txtJurusan.setBorder(null);
 
         txtNama.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
@@ -104,8 +107,13 @@ public final class MenajemenData2 extends javax.swing.JPanel {
         jLabel17.setText("Nim");
 
         comboStatus.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--  Pilih Status --", "Aktif", "No Aktif", "Cuti" }));
+        comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ui.combo.status", "ui.status.active", "ui.status.inactive", "ui.status.leave" }));
         comboStatus.setBorder(null);
+        comboStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboStatusActionPerformed(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
         jLabel18.setText("UID Kartu");
@@ -367,8 +375,9 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
-        if (txtSearch.getText().equals("Search")) {
-            txtSearch.setText("");}   // TODO add your handling code here:
+        if (txtSearch.getText().equals(simandi.service.BahasaService.get("ui.search.placeholder"))) {
+            txtSearch.setText("");
+        }
     }//GEN-LAST:event_txtSearchFocusGained
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -376,40 +385,39 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void lblClearFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lblClearFocusLost
-         if (txtSearch.getText().trim().isEmpty()) {
-            txtSearch.setText("Search");}// TODO add your handling code here:
+        if (txtSearch.getText().trim().isEmpty()) {
+            txtSearch.setText("Search");
+        }// TODO add your handling code here:
     }//GEN-LAST:event_lblClearFocusLost
 
     private void btnSimpanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimpanMouseClicked
-    // Buat objek dan ambil data dari inputan
-    Anggota a = new Anggota();
-    a.setUidRfid(SecurityUtils.getHash(txtUid.getText(), SecurityUtils.SHA_256));
-    a.setNamaLengkap(txtNama.getText());
-    a.setNim(EncryptionUtils.encrypt(txtNim.getText()));
-    a.setKelas(txtKelas.getSelectedItem().toString());
-    a.setJurusan(txtJurusan.getSelectedItem().toString());
-    a.setStatus(comboStatus.getSelectedItem().toString());
-    // Panggil service untuk simpan ke database
-    service.tambahAnggota(a); 
-    javax.swing.JOptionPane.showMessageDialog(this, "Data Berhasil Disimpan!");
-
-    // Refresh tampilan
-    refresAll();// TODO add your handling code here:
-    }//GEN-LAST:event_btnSimpanMouseClicked
-
-    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
-        // Ambil data yang sudah diedit di form                              
+        // Buat objek dan ambil data dari inputan
         Anggota a = new Anggota();
-        a.setUidRfid(txtUid.getText());
+        a.setUidRfid(SecurityUtils.getHash(txtUid.getText(), SecurityUtils.SHA_256));
         a.setNamaLengkap(txtNama.getText());
-        a.setNim(txtNim.getText());
+        a.setNim(EncryptionUtils.encrypt(txtNim.getText()));
         a.setKelas(txtKelas.getSelectedItem().toString());
         a.setJurusan(txtJurusan.getSelectedItem().toString());
         a.setStatus(comboStatus.getSelectedItem().toString());
+        service.tambahAnggota(a);
+        javax.swing.JOptionPane.showMessageDialog(this, "Data Berhasil Disimpan!");
 
+        // Refresh tampilan
+        refresAll();// TODO add your handling code here:
+    }//GEN-LAST:event_btnSimpanMouseClicked
+
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        // Ambil data yang sudah diedit di form                                                          
+        Anggota a = new Anggota();
+        a.setUidRfid(txtUid.getText());
+        a.setNamaLengkap(txtNama.getText());
+        a.setNim(simandi.util.EncryptionUtils.encrypt(txtNim.getText()));
+        a.setKelas(txtKelas.getSelectedItem().toString());
+        a.setJurusan(txtJurusan.getSelectedItem().toString());
+        a.setStatus(comboStatus.getSelectedItem().toString());
         // Panggil update
         service.updateAnggota(a);
-        refresAll();// TODO add your handling code here:
+        refresAll();
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
@@ -417,15 +425,17 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void lblClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblClearMouseClicked
-        txtSearch.setText("Search");
-        // Nampilin data lgi setelah ngesilang di pencet\
+        txtSearch.setText(simandi.service.BahasaService.get("ui.search.placeholder"));
         showData("");
-        // TODO add your handling code here:
     }//GEN-LAST:event_lblClearMouseClicked
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         refresAll();        // TODO add your handling code here:
     }//GEN-LAST:event_btnRefreshMouseClicked
+
+    private void comboStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboStatusActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -455,4 +465,82 @@ public final class MenajemenData2 extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearch;
     public static javax.swing.JTextField txtUid;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onLanguageChanged() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // 1. Ubah Teks Judul & Label Form 
+            btnLaporan3.setText(simandi.service.BahasaService.get("ui.student.title"));
+            jLabel18.setText(simandi.service.BahasaService.get("ui.student.uid"));
+            jLabel4.setText(simandi.service.BahasaService.get("ui.student.name"));
+            jLabel17.setText(simandi.service.BahasaService.get("ui.student.nim"));
+            jLabel16.setText(simandi.service.BahasaService.get("ui.student.class"));
+            jLabel19.setText(simandi.service.BahasaService.get("ui.student.major"));
+            jLabel15.setText(simandi.service.BahasaService.get("ui.student.status"));
+            if (txtJurusan.getItemCount() > 0) {
+                javax.swing.DefaultComboBoxModel<String> modelJ = (javax.swing.DefaultComboBoxModel<String>) txtJurusan.getModel();
+                modelJ.removeElementAt(0);
+                modelJ.insertElementAt(simandi.service.BahasaService.get("ui.combo.major"), 0);
+                txtJurusan.setSelectedIndex(0);
+            }
+            if (txtKelas.getItemCount() > 0) {
+                javax.swing.DefaultComboBoxModel<String> modelK = (javax.swing.DefaultComboBoxModel<String>) txtKelas.getModel();
+                modelK.removeElementAt(0);
+                modelK.insertElementAt(simandi.service.BahasaService.get("ui.combo.class"), 0);
+                txtKelas.setSelectedIndex(0);
+            }
+            if (comboStatus.getItemCount() > 0) {
+                javax.swing.DefaultComboBoxModel<String> modelS = (javax.swing.DefaultComboBoxModel<String>) comboStatus.getModel();
+                modelS.removeElementAt(0);
+                modelS.insertElementAt(simandi.service.BahasaService.get("ui.combo.status"), 0);
+                comboStatus.setSelectedIndex(0);
+            }
+
+            // 2. Ubah Teks Tombol Atas:
+            btnSimpan.setText(simandi.service.BahasaService.get("ui.btn.save"));
+            btnUpdate.setText(simandi.service.BahasaService.get("ui.btn.update"));
+            btnRefresh.setText(simandi.service.BahasaService.get("ui.btn.refresh"));
+
+            String teksSearch = txtSearch.getText();
+            if (teksSearch.equals("Search") || teksSearch.equals("Cari...") || teksSearch.equals("Zoeken...") || teksSearch.trim().isEmpty()) {
+                txtSearch.setText(simandi.service.BahasaService.get("ui.search.placeholder"));
+            }
+
+            // 3. Muat Ulang Kartu Anggota agar teks EDIT & HAPUS di dalam kartu ikut berubah!
+            renderLang();
+            showData("");
+
+            this.revalidate();
+            this.repaint();
+        });
+    }
+
+    private void renderLang() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // 1. Renderer Jurusan (Kembar 100% dengan dosen)
+            txtJurusan.setRenderer(new javax.swing.DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(javax.swing.JList<?> list, Object value,
+                        int index, boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    if (value instanceof String key) {
+                        setText(simandi.service.BahasaService.get(key));
+                    }
+                    return this;
+                }
+            });
+            // 2. Renderer Status (Kembar 100% dengan dosen)
+            comboStatus.setRenderer(new javax.swing.DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(javax.swing.JList<?> list, Object value,
+                        int index, boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    if (value instanceof String key) {
+                        setText(simandi.service.BahasaService.get(key));
+                    }
+                    return this;
+                }
+            });
+        });
+    }
 }
