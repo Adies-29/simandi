@@ -31,8 +31,8 @@ public class SlidingLanguageToggle extends JToggleButton {
     private int selectedLanguageIndex = 0; 
     
     // Label teks statis (Bisa juga disesuaikan jika ingin dinamis)
-    private final String[] languages = {"Indonesia", "Inggris", "Nederlands"};
-    private final String[] langcodes = {"id", "en", "nl"};
+    private final String[] languages = {"Indonesia", "Inggris", "Nederlands", "Español"};
+    private final String[] langcodes = {"id", "en", "nl", "es"};
     
     public SlidingLanguageToggle() {
         super();
@@ -51,7 +51,7 @@ public class SlidingLanguageToggle extends JToggleButton {
             @Override
             public void mousePressed(MouseEvent e) {
                 int width = getWidth();
-                int sectionWidth = width / 3;
+                int sectionWidth = width / 4;
                 int clickX = e.getX();
 
                 // Tentukan indeks berdasarkan koordinat klik X
@@ -61,10 +61,14 @@ public class SlidingLanguageToggle extends JToggleButton {
                 } else if (clickX < sectionWidth * 2) {
                     setSelectedLanguageIndex(1);
                     Setting.prefs.put("LANGUAGE", langcodes[1]);
-                } else {
+                } else if (clickX < sectionWidth * 3){
                     setSelectedLanguageIndex(2);
                     Setting.prefs.put("LANGUAGE", langcodes[2]);
+                }else {
+                    setSelectedLanguageIndex(3);
+                    Setting.prefs.put("LANGUAGE", langcodes[3]);
                 }
+                
                 
                 // Memicu event action listener bawaan JToggleButton agar didengar oleh Form
                 //fireActionPerformed(null);
@@ -84,7 +88,7 @@ public class SlidingLanguageToggle extends JToggleButton {
      * @param index
      */
     public void setSelectedLanguageIndex(int index) {
-        if (index >= 0 && index <= 2) {
+        if (index >= 0 && index <= 3) {
             this.selectedLanguageIndex = index;
             repaint();
         }
@@ -100,6 +104,9 @@ public class SlidingLanguageToggle extends JToggleButton {
             case "nl":
                 this.selectedLanguageIndex = 2;
                 break;
+            case "es":
+                this.selectedLanguageIndex = 3;
+                break;    
             default:
                 break;
         }
@@ -113,12 +120,14 @@ public class SlidingLanguageToggle extends JToggleButton {
             case 0 -> "id";
             case 1 -> "en";
             case 2 -> "nl";
+            case 3 -> "es";    
             default -> "id";
         };
     }
      @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
+        
 
         // Mengaktifkan anti-aliasing
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -128,8 +137,9 @@ public class SlidingLanguageToggle extends JToggleButton {
         int h = getHeight();
         int margin = 5; 
         
+        
         // Lebar slider dibagi 3 bagian dikurangi margin
-        int sliderWidth = (w / 3) - (margin + (margin / 3));
+        int sliderWidth = (w / 4) - (margin + (margin / 2));
         int sliderHeight = h - (margin * 2);
 
         // 1. GAMBAR BACKGROUND UTAMA
@@ -137,10 +147,10 @@ public class SlidingLanguageToggle extends JToggleButton {
         g2.fillRoundRect(0, 0, w, h, cornerRadius, cornerRadius);
 
         // 2. KALKULASI & GAMBAR SLIDER BERGESER (Posisi X dinamis berdasarkan indeks)
-        int sliderX = margin + (selectedLanguageIndex * (w / 3));
+        int sliderX = margin + (selectedLanguageIndex * (w / 4));
         // Penyesuaian mikro posisi X agar presisi di tengah kolomnya
         if (selectedLanguageIndex == 1) sliderX += 2;
-        if (selectedLanguageIndex == 2) sliderX = w - sliderWidth - margin;
+        if (selectedLanguageIndex == 3) sliderX = w - sliderWidth - margin;
 
         g2.setColor(COLOR_SLIDER_ACTIVE);
         g2.fillRoundRect(sliderX, margin, sliderWidth, sliderHeight, cornerRadius - 6, cornerRadius - 6);
@@ -153,7 +163,7 @@ public class SlidingLanguageToggle extends JToggleButton {
             String text = languages[i];
             
             // Hitung titik tengah X masing-masing sepertiga bagian tombol
-            int targetCenterX = (w / 6) + (i * (w / 3));
+            int targetCenterX = (w / 8) + (i * (w / 4));
             int textX = targetCenterX - (fm.stringWidth(text) / 2);
 
             // Jika teks berada di bawah slider aktif, warnai putih pekat. Jika tidak, redupkan.
