@@ -145,6 +145,11 @@ public class dashboardAdmin extends javax.swing.JFrame implements simandi.servic
         });
 
         buttonBadges4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/manage (3).png"))); // NOI18N
+        buttonBadges4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonBadges4MouseClicked(evt);
+            }
+        });
         buttonBadges4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBadges4ActionPerformed(evt);
@@ -322,10 +327,10 @@ public class dashboardAdmin extends javax.swing.JFrame implements simandi.servic
               // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSettingMouseClicked
-        setActiveMenu(btnSetting);
-        AddViews(new simandi.ui.panels.Setting());
-    }//GEN-LAST:event_btnSettingMouseClicked
+    private void buttonBadges4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonBadges4MouseClicked
+        setActiveMenu(btnData);
+        AddViews(new simandi.ui.panels.MenajemenData()); // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges4MouseClicked
 
     /**
      * @param args the command line arguments

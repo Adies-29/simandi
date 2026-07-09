@@ -589,7 +589,7 @@ public final class MenajemenData extends javax.swing.JPanel {
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
         Anggota a = new Anggota();
-
+        
         a.setUidRfid(txtUID.getText());
         a.setNamaLengkap(txtNama.getText());
         a.setNim(txtNim.getText());
