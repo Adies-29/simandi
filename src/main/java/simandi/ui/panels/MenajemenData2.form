@@ -165,17 +165,15 @@
               <Font name="Trebuchet MS" size="12" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="10">
-                <StringItem index="0" value="-- Pilih Jurusan --"/>
-                <StringItem index="1" value="Teknik Informatika"/>
-                <StringItem index="2" value="Sistem Informasi"/>
-                <StringItem index="3" value="Teknik Komputer"/>
-                <StringItem index="4" value="Manajemen Informatika"/>
-                <StringItem index="5" value="Teknik Elektro"/>
-                <StringItem index="6" value="Teknik Mesin"/>
-                <StringItem index="7" value="Akuntansi"/>
-                <StringItem index="8" value="Manajemen"/>
-                <StringItem index="9" value="Bisnis Digital"/>
+              <StringArray count="8">
+                <StringItem index="0" value="ui.combo.major"/>
+                <StringItem index="1" value="ui.major.ti"/>
+                <StringItem index="2" value="ui.major.si"/>
+                <StringItem index="3" value="ui.major.tk"/>
+                <StringItem index="4" value="ui.major.mi"/>
+                <StringItem index="5" value="ui.major.te"/>
+                <StringItem index="6" value="ui.major.tm"/>
+                <StringItem index="7" value="ui.major.ak"/>
               </StringArray>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -224,16 +222,19 @@
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
-                <StringItem index="0" value="--  Pilih Status --"/>
-                <StringItem index="1" value="Aktif"/>
-                <StringItem index="2" value="No Aktif"/>
-                <StringItem index="3" value="Cuti"/>
+                <StringItem index="0" value="ui.combo.status"/>
+                <StringItem index="1" value="ui.status.active"/>
+                <StringItem index="2" value="ui.status.inactive"/>
+                <StringItem index="3" value="ui.status.leave"/>
               </StringArray>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboStatusActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>

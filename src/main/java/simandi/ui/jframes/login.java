@@ -245,6 +245,32 @@ public class login extends javax.swing.JFrame {
             AuthService userService = new AuthService();
             userService.login(username, password, this);
         }
+        
+        Thread loginThread = new Thread(() -> {
+            try {
+                // Proses koneksi dan pemeriksaan password MongoDB berjalan di background
+                AuthService userService = new AuthService();
+                userService.login(username, password, login.this);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(login.this, "Terjadi kesalahan koneksi: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                });
+            } finally {
+                // 3. KEMBALIKAN UI KE KONDISI NORMAL (Lewat EDT/UI Thread)
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    jLabel6.setText(username);
+                    txtUsrname.setEnabled(true);
+                    txtPasword.setEnabled(true);
+                });
+            }
+        }, "Thread-Auth-Login"); // Kita beri nama thread-nya untuk pembuktian presentasi!
+        // Jadikan Daemon Thread agar otomatis mati jika aplikasi ditutup paksa
+
+
+        loginThread.setDaemon(true);
+        loginThread.start();
     }
 }
 

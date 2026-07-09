@@ -90,21 +90,41 @@ public class logout extends javax.swing.JFrame {
 
     private void BtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoutActionPerformed
         // 1. Menutup dialog/frame konfirmasi ini
-    this.dispose(); 
-    
-    // 2. Jika dialog ini dipanggil dari Menu Utama, kita harus menutup Menu Utamanya juga
-    // Cari frame aktif dan tutup
-    for (java.awt.Window window : java.awt.Window.getWindows()) {
-        if (window instanceof javax.swing.JFrame) {
-            window.dispose();
-        }
-    }
-
-    // 3. Buka kembali form Login
-    new login().setVisible(true);
-    
-    // 4. (Opsional) Tampilkan pesan sukses
-    javax.swing.JOptionPane.showMessageDialog(null, "Anda telah berhasil logout.");
+     Thread logoutThread = new Thread(() -> {
+            try {
+                System.out.println("--> [THREAD-LOGOUT] Membersihkan sesi dan koneksi user di background...");
+                
+                // (Opsional) Jika kamu punya perintah untuk mencatat log aktivitas logout ke database MongoDB,
+                // prosesnya sangat aman ditaruh di dalam blok ini:
+                // simandi.service.AuthService.catatWaktuLogout();
+                
+                // Beri jeda sedikit (400ms) agar transisi penutupan jendela terlihat mulus & profesional
+                Thread.sleep(400); 
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // 3. KEMBALI KE UI THREAD (EDT): Tutup semua frame & buka form Login
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    // Tutup dialog/frame konfirmasi ini
+                    this.dispose(); 
+                    
+                    // Tutup semua jendela/frame utama (Menu Utama/Dashboard) yang sedang aktif
+                    for (java.awt.Window window : java.awt.Window.getWindows()) {
+                        if (window instanceof javax.swing.JFrame) {
+                            window.dispose();
+                        }
+                    }
+                    // Buka kembali layar Login
+                    new login().setVisible(true);
+                    
+                    // Tampilkan pesan sukses
+                    javax.swing.JOptionPane.showMessageDialog(null, "Anda telah berhasil keluar (Logout).", "Sukses", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                });
+            }
+        }, "Thread-Auth-Logout"); // Nama thread khusus untuk pembuktian saat presentasi!
+        logoutThread.setDaemon(true);
+        logoutThread.start();
 
     }//GEN-LAST:event_BtnLogoutActionPerformed
 

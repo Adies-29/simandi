@@ -20,18 +20,18 @@ public class SecurityUtils {
     public static final String SHA_384 = "SHA-384";
     public static final String SHA_512 = "SHA-512";
     
-     /**
+    /**
      * Method untuk menghasilkan nilai hash dari sebuah teks berdasarkan algoritma pilihan.
      * 
      * @param input Teks mentah (password/UID RFID)
      * @param algorithm Pilihan algoritma (gunakan konstanta statis di atas)
      * @return String hasil hash dalam format Hexadecimal
      */
-    
     public static String getHash(String input, String algorithm) {
         try {
             // Mengambil instance MessageDigest berdasarkan algoritma yang dipilih
             MessageDigest md = MessageDigest.getInstance(algorithm);
+            
             // Proses hashing
             byte[] hashBytes = md.digest(input.getBytes());
             
@@ -40,12 +40,15 @@ public class SecurityUtils {
             for (byte b : hashBytes) {
                 String hex = Integer.toHexString(0xff & b);
                 if (hex.length() == 1) {
-                    hexString.append ("0");
+                    hexString.append('0');
                 }
                 hexString.append(hex);
             }
+            
             return hexString.toString();
+            
         } catch (NoSuchAlgorithmException e) {
+            // Log error jika algoritma tidak terdaftar di runtime JCA [4]
             System.err.println("Kesalahan: Algoritma " + algorithm + " tidak didukung. " + e.getMessage());
             return null;
         }

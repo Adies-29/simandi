@@ -93,9 +93,11 @@
                       <Component id="btnData" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="buttonBadges5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="btnLaporan" min="-2" pref="78" max="-2" attributes="0"/>
-                      <EmptySpace pref="799" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnLaporan" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
+                      <Component id="btnSetting" min="-2" pref="125" max="-2" attributes="0"/>
+                      <EmptySpace pref="489" max="32767" attributes="0"/>
                       <Component id="buttonBadges6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="buttonBadges1" min="-2" max="-2" attributes="0"/>
@@ -110,10 +112,11 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnLaporan" alignment="0" max="32767" attributes="0"/>
-                              <Component id="buttonBadges5" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnLaporan" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="btnSetting" alignment="3" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="buttonBadges5" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="btnData" alignment="0" max="32767" attributes="0"/>
@@ -228,6 +231,17 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonBadges6ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="btnSetting">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="MS UI Gothic" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Setting"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSettingMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>

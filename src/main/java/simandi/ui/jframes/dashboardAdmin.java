@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel; 
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import simandi.ui.dialogs.logout;
 import simandi.ui.jframes.login;
@@ -18,7 +19,7 @@ import simandi.ui.jframes.login;
  *
  * @author Tya
  */
-public class dashboardAdmin extends javax.swing.JFrame {
+public class dashboardAdmin extends javax.swing.JFrame implements simandi.service.BahasaService.bahasaChangeListener  {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(dashboardAdmin.class.getName());
 
@@ -27,6 +28,8 @@ public class dashboardAdmin extends javax.swing.JFrame {
      */
     public dashboardAdmin() {
         initComponents();
+        simandi.service.BahasaService.registerListener(this);
+        onLanguageChanged();
         setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         
@@ -42,10 +45,12 @@ public class dashboardAdmin extends javax.swing.JFrame {
     btnLive.setForeground(new Color(80, 80, 80));
     btnData.setForeground(new Color(80, 80, 80));
     btnLaporan.setForeground(new Color(80, 80, 80));
+    btnSetting.setForeground(new Color(80, 80, 80)); 
 
     btnLive.setBorder(null);
     btnData.setBorder(null);
     btnLaporan.setBorder(null);
+    btnSetting.setBorder(null);
 
     // warna soft
     Color softBlue = new Color(158, 180, 255);      // garis
@@ -92,6 +97,7 @@ public class dashboardAdmin extends javax.swing.JFrame {
         buttonBadges5 = new smd.swing.ButtonBadges();
         btnLaporan = new javax.swing.JLabel();
         buttonBadges6 = new smd.swing.ButtonBadges();
+        btnSetting = new javax.swing.JLabel();
         mainpanel = new javax.swing.JPanel();
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
@@ -180,6 +186,14 @@ public class dashboardAdmin extends javax.swing.JFrame {
             }
         });
 
+        btnSetting.setFont(new java.awt.Font("MS UI Gothic", 1, 18)); // NOI18N
+        btnSetting.setText("Setting");
+        btnSetting.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSettingMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
         roundPanel2.setLayout(roundPanel2Layout);
         roundPanel2Layout.setHorizontalGroup(
@@ -195,9 +209,11 @@ public class dashboardAdmin extends javax.swing.JFrame {
                 .addComponent(btnData)
                 .addGap(20, 20, 20)
                 .addComponent(buttonBadges5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 799, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(135, 135, 135)
+                .addComponent(btnSetting, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 489, Short.MAX_VALUE)
                 .addComponent(buttonBadges6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,9 +226,10 @@ public class dashboardAdmin extends javax.swing.JFrame {
             .addGroup(roundPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonBadges5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSetting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonBadges5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -345,6 +362,7 @@ public class dashboardAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel btnLaporan;
     private javax.swing.JLabel btnLive;
     private smd.swing.ButtonBadges btnLogout;
+    private javax.swing.JLabel btnSetting;
     private smd.swing.ButtonBadges buttonBadges1;
     private smd.swing.ButtonBadges buttonBadges3;
     private smd.swing.ButtonBadges buttonBadges4;
@@ -356,4 +374,18 @@ public class dashboardAdmin extends javax.swing.JFrame {
     private smd.swing.RoundPanel roundPanel1;
     private smd.swing.RoundPanel roundPanel2;
     // End of variables declaration//GEN-END:variables
+
+    
+     @Override
+    public void onLanguageChanged() {
+         SwingUtilities.invokeLater(()->{
+            btnLive.setText(simandi.service.BahasaService.get("ui.menu.attendance"));
+            btnData.setText(simandi.service.BahasaService.get("ui.menu.masterdata"));
+            btnLaporan.setText(simandi.service.BahasaService.get("ui.menu.report"));
+            btnSetting.setText(simandi.service.BahasaService.get("ui.menu.settings"));
+            // Refresh layar
+            this.revalidate();
+            this.repaint(); 
+         });
+    }
 }

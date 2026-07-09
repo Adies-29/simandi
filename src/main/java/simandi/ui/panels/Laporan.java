@@ -8,13 +8,82 @@ package simandi.ui.panels;
  *
  * @author Tya
  */
-public class Laporan extends javax.swing.JPanel {
+public class Laporan extends javax.swing.JPanel implements simandi.service.BahasaService.bahasaChangeListener {
 
     /**
-     * Creates new form 
+     * Creates new form
      */
     public Laporan() {
         initComponents();
+        simandi.service.BahasaService.registerListener(this);
+        onLanguageChanged();
+        // =====================================================================
+        // PERMAK TEKS & TABEL AGAR SUPER JELAS DAN MEWAH:
+        // =====================================================================
+        tblUser.setForeground(new java.awt.Color(44, 62, 80)); // Teks warna Hitam/Navy elegan (Sangat Jelas!)
+        tblUser.setBackground(java.awt.Color.WHITE);           // Background baris putih bersih
+        tblUser.setFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 13)); // Font lebih modern
+        tblUser.setRowHeight(30);                              // Tinggi baris lebih lega (tidak sempit)
+
+        // Bonus: Ubah warna Header (Judul Kolom Atas) jadi Biru Mewah teks Putih:
+        tblUser.getTableHeader().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
+        tblUser.getTableHeader().setBackground(new java.awt.Color(52, 152, 219));
+        tblUser.getTableHeader().setForeground(java.awt.Color.BLUE);
+        loadDataLaporan();
+
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                System.out.println("--> [AUTO-REFRESH] Tab Laporan dibuka! Memuat log terbaru...");
+                loadDataLaporan();
+            }
+        });
+    }
+
+    /**
+     * Method untuk membaca riwayat absensi dari MongoDB dan menaruhnya di tabel
+     */
+    public void loadDataLaporan() {
+
+        Thread loaderThread = new Thread(() -> {
+
+            System.out.println("--> [THREAD-LAPORAN] Mulai membaca data log absensi di background...");
+
+            try {
+                simandi.service.LogAbsensiService logService = new simandi.service.LogAbsensiService();
+                java.util.List<simandi.objek.LogAbsensi> daftarLog = logService.ambilSemuaLog();
+                simandi.service.AnggotaService2 anggotaService = new simandi.service.AnggotaService2();
+
+                javax.swing.SwingUtilities.invokeLater(() -> {
+
+                    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUser.getModel();
+                    model.setRowCount(0); // Bersihkan baris tabel lama
+
+                    for (simandi.objek.LogAbsensi log : daftarLog) {
+                        // Cari data anggota lengkap untuk mendapatkan NIM terdekripsi, Kelas, dan Jurusan
+                        simandi.objek.Anggota a = anggotaService.cariAnggotaByUid(log.getUidRfid());
+                        String nimAsli = (a != null && a.getNim() != null) ? simandi.util.EncryptionUtils.decrypt(a.getNim()) : "-";
+                        String kelas = (a != null) ? a.getKelas() : "-";
+                        String jurusan = (a != null) ? a.getJurusan() : "-";
+                        model.addRow(new Object[]{
+                            log.getUidRfid(),
+                            log.getNamaLengkap(),
+                            nimAsli,
+                            kelas,
+                            simandi.service.BahasaService.get(jurusan),
+                            log.getStatus(),
+                            log.getLocalDateTimewaktuTap() // Tampilkan jam & tanggal di kolom Aksi
+                        });
+                    }
+                    System.out.println("--> [THREAD-LAPORAN] Sukses memuat " + daftarLog.size() + " data ke tabel Laporan!");
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Gagal memuat data laporan: " + e.getMessage());
+            }
+        }, "Thread-Laporan-Loader");
+        loaderThread.setDaemon(true);
+        loaderThread.start();
     }
 
     /**
@@ -89,7 +158,7 @@ public class Laporan extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "UID Kartu", "Nama Mahasiswa", "Nim", "Kelas", "Jurusan", "Status Anggota", "Aksi"
+                "UID Kartu", "Nama Mahasiswa", "Nim", "Kelas", "Jurusan", "Status Anggota", "Waktu"
             }
         ) {
             Class[] types = new Class [] {
@@ -150,7 +219,7 @@ public class Laporan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLaporanMouseClicked
-
+        loadDataLaporan();
     }//GEN-LAST:event_btnLaporanMouseClicked
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
@@ -165,4 +234,35 @@ public class Laporan extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUser;
     // End of variables declaration//GEN-END:variables
+
+        @Override
+    public void onLanguageChanged() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // 1. Ubah Teks Judul Atas (Jika nama variabel label judulmu btnLaporan):
+            if (btnLaporan != null) {
+                btnLaporan.setText(simandi.service.BahasaService.get("ui.report.title"));
+            }
+            
+            // 2. Ubah Nama 7 Kolom Tabel (UID, Nama, NIM, Kelas, Jurusan, Status, Waktu)
+            if (tblUser != null && tblUser.getColumnModel().getColumnCount() >= 7) {
+                tblUser.getColumnModel().getColumn(0).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.uid"));
+                tblUser.getColumnModel().getColumn(1).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.name"));
+                tblUser.getColumnModel().getColumn(2).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.nim"));
+                tblUser.getColumnModel().getColumn(3).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.class"));
+                tblUser.getColumnModel().getColumn(4).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.major"));
+                tblUser.getColumnModel().getColumn(5).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.status"));
+                tblUser.getColumnModel().getColumn(6).setHeaderValue(simandi.service.BahasaService.get("ui.report.col.time"));
+                
+                tblUser.getTableHeader().repaint(); // Refresh tampilan header tabel
+            }
+            
+            // 3. Muat ulang isi tabel agar teks jurusan/status ikut berubah bahasa!
+            loadDataLaporan();
+            
+            this.revalidate();
+            this.repaint();
+        });
+    }
+
+
 }
